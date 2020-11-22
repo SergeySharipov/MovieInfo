@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/movies_nav_graph"
+    app:startDestination="@id/popularMoviesFragment">
+
+    <fragment
+        android:id="@+id/popularMoviesFragment"
+        android:name="ca.sharipov.movieinfo.ui.fragments.PopularMoviesFragment"
+        android:label="PopularMoviesFragment" >
+        <action
+            android:id="@+id/action_popularMoviesFragment_to_movieFragment"
+            app:destination="@id/movieFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/searchMoviesFragment"
+        android:name="ca.sharipov.movieinfo.ui.fragments.SearchMoviesFragment"
+        android:label="SearchMoviesFragment" >
+        <action
+            android:id="@+id/action_searchMoviesFragment_to_movieFragment"
+            app:destination="@id/movieFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieFragment"
+        android:name="ca.sharipov.movieinfo.ui.fragments.MovieFragment"
+        android:label="MovieFragment" >
+        <argument
+            android:name="movieBrief"
+            app:argType="ca.sharipov.movieinfo.models.MovieBrief" />
+    </fragment>
+</navigation>
