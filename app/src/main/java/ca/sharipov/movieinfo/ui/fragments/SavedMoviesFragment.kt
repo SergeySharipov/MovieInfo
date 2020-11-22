@@ -27,7 +27,7 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
 
         moviesAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
-                putSerializable("article", it)
+                putSerializable("movieBrief", it)
             }
             findNavController().navigate(
                 R.id.action_savedMoviesFragment_to_moviesFragment,
@@ -51,7 +51,7 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
                 val position = viewHolder.adapterPosition
                 val article = moviesAdapter.differ.currentList[position]
                 viewModel.deleteMovieBrief(article)
-                Snackbar.make(view, "Successfully deleted article", Snackbar.LENGTH_LONG).apply {
+                Snackbar.make(view, "Successfully deleted movie", Snackbar.LENGTH_LONG).apply {
                     setAction("Undo") {
                         viewModel.saveMovieBrief(article)
                     }
