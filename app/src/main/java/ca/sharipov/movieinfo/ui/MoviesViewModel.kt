@@ -126,15 +126,10 @@ class MoviesViewModel(
                 else -> false
             }
         } else {
-            connectivityManager.activeNetworkInfo?.run {
-                return when (type) {
-                    TYPE_WIFI -> true
-                    TYPE_MOBILE -> true
-                    TYPE_ETHERNET -> true
-                    else -> false
-                }
-            }
+            @Suppress("DEPRECATION")
+            val netInfo = connectivityManager.activeNetworkInfo
+            @Suppress("DEPRECATION")
+            return netInfo != null && netInfo.isConnectedOrConnecting
         }
-        return false
     }
 }
