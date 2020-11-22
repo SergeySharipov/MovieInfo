@@ -112,7 +112,7 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
             val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
             val isNotAtBeginning = firstVisibleItemPosition >= 0
             val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_PAGE_SIZE
-            val shouldPaginate = isNotLoadingAndNotLastPage && !isAtLastItem && isNotAtBeginning &&
+            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
                     isTotalMoreThanVisible && isScrolling
             if(shouldPaginate) {
                 Toast.makeText(activity, "shouldPaginate: $totalItemCount", Toast.LENGTH_LONG).show()

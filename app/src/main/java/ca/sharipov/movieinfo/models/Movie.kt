@@ -11,26 +11,46 @@ import java.io.Serializable
 )
 data class Movie(
     @PrimaryKey(autoGenerate = true)
+    @SerializedName("id")
     var id: Int? = null,
+    @SerializedName("title")
     val title: String?,
+    @SerializedName("overview")
     val overview: String?,
+    @SerializedName("release_date")
     val releaseDate: String?,
-    val genres: String?,
-    val adult: String?,
+    @SerializedName("genres")
+    val genres: List<Genre>?,
+    @SerializedName("adult")
+    val adult: Boolean?,
+    @SerializedName("original_language")
     val originalLanguage: String?,
+    @SerializedName("original_title")
     val originalTitle: String?,
-    val budget: String?,
+    @SerializedName("budget")
+    val budget: Int?,
+    @SerializedName("homepage")
     val homepage: String?,
-    val revenue: String?,
-    val runtime: String?,
+    @SerializedName("revenue")
+    val revenue: Int?,
+    @SerializedName("runtime")
+    val runtime: Int?,
+    @SerializedName("status")
     val status: String?,
+    @SerializedName("tagline")
     val tagline: String?,
+    @SerializedName("poster_path")
     val posterPath: String?,
-    @SerializedName("ef")
+    @SerializedName("backdrop_path")
     val backdropPath: String?,
+    @SerializedName("imdb_id")
     val imdbId: String?,
-    val video: String?,
-    val voteAverage: String?,
-    val voteCount: String?,
-    val popularity: String?
+    @SerializedName("video")
+    val video: Boolean?,
+    @SerializedName("vote_average")
+    val voteAverage: Double?,
+    @SerializedName("vote_count")
+    val voteCount: Int?,
+    @SerializedName("popularity")
+    val popularity: Double?,
 ) : Serializable

@@ -11,6 +11,7 @@ import java.io.Serializable
 )
 data class MovieBrief(
     @PrimaryKey(autoGenerate = true)
+    @SerializedName("id")
     var id: Int? = null,
     @SerializedName("title")
     val title: String?,

@@ -3,7 +3,6 @@ package ca.sharipov.movieinfo.ui
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.ConnectivityManager.*
 import android.net.NetworkCapabilities.*
 import android.os.Build
 import androidx.lifecycle.AndroidViewModel
@@ -13,7 +12,6 @@ import ca.sharipov.movieinfo.MovieInfoApplication
 import ca.sharipov.movieinfo.models.MovieBriefsResponse
 import ca.sharipov.movieinfo.util.Resource
 import kotlinx.coroutines.launch
-import okio.IOException
 import retrofit2.Response
 
 class MoviesViewModel(
@@ -28,6 +26,8 @@ class MoviesViewModel(
     val searchMovieBriefs: MutableLiveData<Resource<MovieBriefsResponse>> = MutableLiveData()
     var searchMovieBriefsPage = 1
     var searchMovieBriefsResponse: MovieBriefsResponse? = null
+    var newSearchQuery:String? = null
+    var oldSearchQuery:String? = null
 
 
     init {
@@ -62,10 +62,12 @@ class MoviesViewModel(
     private fun handleSearchMovieBriefsResponse(response: Response<MovieBriefsResponse>): Resource<MovieBriefsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                searchMovieBriefsPage++
-                if (searchMovieBriefsResponse == null) {
+                if (searchMovieBriefsResponse == null || newSearchQuery != oldSearchQuery) {
+                    searchMovieBriefsPage = 1
+                    oldSearchQuery = newSearchQuery
                     searchMovieBriefsResponse = resultResponse
                 } else {
+                    searchMovieBriefsPage++
                     val oldMovies = searchMovieBriefsResponse?.results
                     val newMovies = resultResponse.results
                     oldMovies?.addAll(newMovies)
@@ -77,6 +79,7 @@ class MoviesViewModel(
     }
 
     private suspend fun safeSearchMovieBriefsCall(searchQuery: String) {
+        newSearchQuery = searchQuery
         searchMovieBriefs.postValue(Resource.Loading())
 //        try {
             if (hasInternetConnection()) {
