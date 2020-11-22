@@ -6,19 +6,31 @@
     <fragment
         android:id="@+id/popularMoviesFragment"
         android:name="ca.sharipov.movieinfo.ui.fragments.PopularMoviesFragment"
-        android:label="PopularMoviesFragment" >
+        android:label="PopularMoviesFragment">
         <action
             android:id="@+id/action_popularMoviesFragment_to_movieFragment"
             app:destination="@id/movieFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/savedMoviesFragment"
+        android:name="ca.sharipov.movieinfo.ui.fragments.SavedMoviesFragment"
+        android:label="SavedMoviesFragment">
+        <action
+            android:id="@+id/action_savedMoviesFragment_to_moviesFragment"
+            app:destination="@id/movieFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/searchMoviesFragment"
         android:name="ca.sharipov.movieinfo.ui.fragments.SearchMoviesFragment"
-        android:label="SearchMoviesFragment" >
+        android:label="SearchMoviesFragment">
         <action
             android:id="@+id/action_searchMoviesFragment_to_movieFragment"
             app:destination="@id/movieFragment"

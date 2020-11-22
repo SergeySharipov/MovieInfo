@@ -9,7 +9,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import ca.sharipov.movieinfo.MovieInfoApplication
+import ca.sharipov.movieinfo.models.MovieBrief
 import ca.sharipov.movieinfo.models.MovieBriefsResponse
+import ca.sharipov.movieinfo.repository.MoviesRepository
 import ca.sharipov.movieinfo.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -26,8 +28,8 @@ class MoviesViewModel(
     val searchMovieBriefs: MutableLiveData<Resource<MovieBriefsResponse>> = MutableLiveData()
     var searchMovieBriefsPage = 1
     var searchMovieBriefsResponse: MovieBriefsResponse? = null
-    var newSearchQuery:String? = null
-    var oldSearchQuery:String? = null
+    var newSearchQuery: String? = null
+    var oldSearchQuery: String? = null
 
 
     init {
@@ -82,13 +84,13 @@ class MoviesViewModel(
         newSearchQuery = searchQuery
         searchMovieBriefs.postValue(Resource.Loading())
 //        try {
-            if (hasInternetConnection()) {
-                val response =
-                    moviesRepository.searchMovieByName(searchQuery, searchMovieBriefsPage)
-                searchMovieBriefs.postValue(handleSearchMovieBriefsResponse(response))
-            } else {
-                searchMovieBriefs.postValue(Resource.Error("No internet connection"))
-            }
+        if (hasInternetConnection()) {
+            val response =
+                moviesRepository.searchMovieByName(searchQuery, searchMovieBriefsPage)
+            searchMovieBriefs.postValue(handleSearchMovieBriefsResponse(response))
+        } else {
+            searchMovieBriefs.postValue(Resource.Error("No internet connection"))
+        }
 //        } catch (t: Throwable) {
 //            when (t) {
 //                is IOException -> searchMovieBriefs.postValue(Resource.Error("Network Failure"))
@@ -100,12 +102,12 @@ class MoviesViewModel(
     private suspend fun safePopularMovieBriefsCall() {
         popularMovieBriefs.postValue(Resource.Loading())
 //        try {
-            if (hasInternetConnection()) {
-                val response = moviesRepository.getPopularMovies(popularMovieBriefsPage)
-                popularMovieBriefs.postValue(handlePopularMovieBriefsResponse(response))
-            } else {
-                popularMovieBriefs.postValue(Resource.Error("No internet connection"))
-            }
+        if (hasInternetConnection()) {
+            val response = moviesRepository.getPopularMovies(popularMovieBriefsPage)
+            popularMovieBriefs.postValue(handlePopularMovieBriefsResponse(response))
+        } else {
+            popularMovieBriefs.postValue(Resource.Error("No internet connection"))
+        }
 //        } catch (t: Throwable) {
 //            when (t) {
 //                is IOException -> popularMovieBriefs.postValue(Resource.Error("Network Failure"))
@@ -134,5 +136,15 @@ class MoviesViewModel(
             @Suppress("DEPRECATION")
             return netInfo != null && netInfo.isConnectedOrConnecting
         }
+    }
+
+    fun saveMovieBrief(movieBrief: MovieBrief) = viewModelScope.launch {
+        moviesRepository.upsert(movieBrief)
+    }
+
+    fun getSavedMovieBriefs() = moviesRepository.getAllMovieBriefs()
+
+    fun deleteMovieBrief(movieBrief: MovieBrief) = viewModelScope.launch {
+        moviesRepository.deleteMovieBrief(movieBrief)
     }
 }
