@@ -18,7 +18,7 @@ import ca.sharipov.movieinfo.util.Constants
 import ca.sharipov.movieinfo.util.Constants.Companion.SEARCH_MOVIES_TIME_DELAY
 import ca.sharipov.movieinfo.util.Resource
 import kotlinx.android.synthetic.main.fragment_search_movies.*
-import kotlinx.android.synthetic.main.fragment_search_movies.paginationProgressBar
+import kotlinx.android.synthetic.main.item_error_message.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -51,7 +51,7 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
             job = MainScope().launch {
                 delay(SEARCH_MOVIES_TIME_DELAY)
                 editable?.let {
-                    if(editable.toString().isNotEmpty()) {
+                    if (editable.toString().isNotEmpty()) {
                         viewModel.searchMovieBriefs(editable.toString())
                     }
                 }
@@ -59,14 +59,16 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
         }
 
         viewModel.searchMovieBriefs.observe(viewLifecycleOwner, Observer { response ->
-            when(response) {
+            when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
+                    hideErrorMessage()
                     response.data?.let { movieBriefsResponse ->
                         moviesAdapter.differ.submitList(movieBriefsResponse.results.toList())
-                        val totalPages = movieBriefsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
+                        val totalPages =
+                            movieBriefsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
                         isLastPage = viewModel.searchMovieBriefsPage == totalPages
-                        if(isLastPage) {
+                        if (isLastPage) {
                             //rvSearchMovies.setPadding(0, 0, 0, 0)
                         }
                     }
@@ -74,8 +76,9 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_SHORT)
+                            .show()
+                        showErrorMessage(message)
                     }
                 }
                 is Resource.Loading -> {
@@ -83,6 +86,10 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
                 }
             }
         })
+
+        btnRetry.setOnClickListener {
+            viewModel.getPopularMovieBriefs()
+        }
     }
 
     private fun hideProgressBar() {
@@ -95,6 +102,18 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
         isLoading = true
     }
 
+    private fun hideErrorMessage() {
+        itemErrorMessage.visibility = View.INVISIBLE
+        isError = false
+    }
+
+    private fun showErrorMessage(message: String) {
+        itemErrorMessage.visibility = View.VISIBLE
+        tvErrorMessage.text = message
+        isError = true
+    }
+
+    var isError = false
     var isLoading = false
     var isLastPage = false
     var isScrolling = false
@@ -108,14 +127,15 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
             val visibleItemCount = layoutManager.childCount
             val totalItemCount = layoutManager.itemCount
 
+            val isNoErrors = !isError
             val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
             val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
             val isNotAtBeginning = firstVisibleItemPosition >= 0
             val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_PAGE_SIZE
-            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
-                    isTotalMoreThanVisible && isScrolling
-            if(shouldPaginate) {
-                Toast.makeText(activity, "shouldPaginate: $totalItemCount", Toast.LENGTH_LONG).show()
+            val shouldPaginate =
+                isNoErrors && isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
+                        isTotalMoreThanVisible && isScrolling
+            if (shouldPaginate) {
                 viewModel.searchMovieBriefs(etSearch.text.toString())
                 isScrolling = false
             }
@@ -123,7 +143,7 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
 
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                 isScrolling = true
             }
         }

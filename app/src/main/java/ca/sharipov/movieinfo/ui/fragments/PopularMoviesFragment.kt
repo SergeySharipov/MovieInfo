@@ -16,6 +16,7 @@ import ca.sharipov.movieinfo.ui.MoviesViewModel
 import ca.sharipov.movieinfo.util.Constants.Companion.QUERY_PAGE_SIZE
 import ca.sharipov.movieinfo.util.Resource
 import kotlinx.android.synthetic.main.fragment_popular_movies.*
+import kotlinx.android.synthetic.main.item_error_message.*
 
 class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
 
@@ -40,14 +41,15 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
         }
 
         viewModel.popularMovieBriefs.observe(viewLifecycleOwner, Observer { response ->
-            when(response) {
+            when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
+                    hideErrorMessage()
                     response.data?.let { moviesResponse ->
                         moviesAdapter.differ.submitList(moviesResponse.results.toList())
                         val totalPages = moviesResponse.totalResults / QUERY_PAGE_SIZE + 2
                         isLastPage = viewModel.popularMovieBriefsPage == totalPages
-                        if(isLastPage) {
+                        if (isLastPage) {
                             // rvPopularMovies.setPadding(0, 0, 0, 0)
                         }
                     }
@@ -55,7 +57,9 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_SHORT)
+                            .show()
+                        showErrorMessage(message)
                     }
                 }
                 is Resource.Loading -> {
@@ -63,6 +67,10 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
                 }
             }
         })
+
+        btnRetry.setOnClickListener {
+            viewModel.getPopularMovieBriefs()
+        }
     }
 
     private fun hideProgressBar() {
@@ -75,6 +83,18 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
         isLoading = true
     }
 
+    private fun hideErrorMessage() {
+        itemErrorMessage.visibility = View.INVISIBLE
+        isError = false
+    }
+
+    private fun showErrorMessage(message: String) {
+        itemErrorMessage.visibility = View.VISIBLE
+        tvErrorMessage.text = message
+        isError = true
+    }
+
+    var isError = false
     var isLoading = false
     var isLastPage = false
     var isScrolling = false
@@ -88,14 +108,15 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
             val visibleItemCount = layoutManager.childCount
             val totalItemCount = layoutManager.itemCount
 
+            val isNoErrors = !isError
             val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
             val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
             val isNotAtBeginning = firstVisibleItemPosition >= 0
             val isTotalMoreThanVisible = totalItemCount >= QUERY_PAGE_SIZE
-            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
-                    isTotalMoreThanVisible && isScrolling
-            if(shouldPaginate) {
-                Toast.makeText(activity, "shouldPaginate: $totalItemCount", Toast.LENGTH_LONG).show()
+            val shouldPaginate =
+                isNoErrors && isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
+                        isTotalMoreThanVisible && isScrolling
+            if (shouldPaginate) {
                 viewModel.getPopularMovieBriefs()
                 isScrolling = false
             }
@@ -103,7 +124,7 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
 
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                 isScrolling = true
             }
         }
