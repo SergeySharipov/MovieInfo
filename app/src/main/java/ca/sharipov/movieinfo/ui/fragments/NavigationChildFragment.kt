@@ -16,6 +16,7 @@ abstract class NavigationChildFragment(contentLayoutId: Int) : Fragment(contentL
         savedInstanceState: Bundle?
     ): View? {
         val activity = activity as? MoviesActivity
+        activity?.supportActionBar?.title = ""
         activity?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
         return super.onCreateView(inflater, container, savedInstanceState)
