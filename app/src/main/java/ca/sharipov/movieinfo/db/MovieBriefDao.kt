@@ -15,4 +15,7 @@ interface MovieBriefDao {
 
     @Delete
     suspend fun deleteMovieBrief(article: MovieBrief)
+
+    @Query("SELECT * from movie_briefs where id=:id")
+    fun getMovieBrief(id: Int): LiveData<MovieBrief>
 }

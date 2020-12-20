@@ -9,7 +9,8 @@ import ca.sharipov.movieinfo.models.MovieBrief
 
 @Database(
     entities = [MovieBrief::class],
-    version = 1
+    version = 2,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class MovieBriefDatabase : RoomDatabase() {

@@ -88,7 +88,11 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
         })
 
         btnRetry.setOnClickListener {
-            viewModel.getPopularMovieBriefs()
+            if (etSearch.text.toString().isNotEmpty()) {
+                viewModel.searchMovieBriefs(etSearch.text.toString())
+            } else {
+                hideErrorMessage()
+            }
         }
     }
 

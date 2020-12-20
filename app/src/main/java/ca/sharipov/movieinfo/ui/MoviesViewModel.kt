@@ -96,7 +96,7 @@ class MoviesViewModel(
 //                is IOException -> searchMovieBriefs.postValue(Resource.Error("Network Failure"))
 //                else -> searchMovieBriefs.postValue(Resource.Error("Conversion Error"))
 //            }
-//        }
+//        }todo
     }
 
     private suspend fun safePopularMovieBriefsCall() {
@@ -141,6 +141,9 @@ class MoviesViewModel(
     fun saveMovieBrief(movieBrief: MovieBrief) = viewModelScope.launch {
         moviesRepository.upsert(movieBrief)
     }
+
+    fun getMovieBrief(movieId: Int) =
+        moviesRepository.getMovieBrief(movieId)
 
     fun getSavedMovieBriefs() = moviesRepository.getAllMovieBriefs()
 

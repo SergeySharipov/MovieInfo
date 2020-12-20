@@ -2,6 +2,7 @@ package ca.sharipov.movieinfo.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import ca.sharipov.movieinfo.R
@@ -10,13 +11,13 @@ import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
 import ca.sharipov.movieinfo.util.Constants
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_movie.*
 
 class MovieFragment : Fragment(R.layout.fragment_movie) {
 
     lateinit var viewModel: MoviesViewModel
     val args: MovieFragmentArgs by navArgs()
+    var isSaved: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,9 +29,25 @@ class MovieFragment : Fragment(R.layout.fragment_movie) {
         tvVoteAverage.text = movieBrief.voteAverage.toString()
         tvOverview.text = movieBrief.overview
 
+        viewModel.getMovieBrief(movieBrief.id!!)
+            .observe(viewLifecycleOwner, { movieBriefSaved ->
+                isSaved = movieBriefSaved != null
+                isSaved(isSaved)
+            })
+
         fab.setOnClickListener {
-            viewModel.saveMovieBrief(movieBrief)
-            Snackbar.make(view, "Movie saved successfully", Snackbar.LENGTH_SHORT).show()
+            if (isSaved) {
+                viewModel.deleteMovieBrief(movieBrief)
+            } else {
+                viewModel.saveMovieBrief(movieBrief)
+            }
         }
+    }
+
+    private fun isSaved(isSaved: Boolean) {
+        if (isSaved)
+            fab.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_saved))
+        else
+            fab.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_not_saved))
     }
 }

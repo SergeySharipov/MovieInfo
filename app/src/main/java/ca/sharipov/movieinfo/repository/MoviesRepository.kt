@@ -22,4 +22,7 @@ class MoviesRepository(
 
     suspend fun deleteMovieBrief(movieBrief: MovieBrief) =
         db.getMovieBriefDao().deleteMovieBrief(movieBrief)
+
+    fun getMovieBrief(id: Int) =
+        db.getMovieBriefDao().getMovieBrief(id)
 }

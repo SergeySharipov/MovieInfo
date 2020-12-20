@@ -36,7 +36,7 @@ data class MovieBrief(
     @SerializedName("original_title")
     val originalTitle: String?,
     @SerializedName("original_language")
-    val originalLanguage: String,
+    val originalLanguage: String?,
     @SerializedName("popularity")
     val popularity: Double?
 ) : Serializable
