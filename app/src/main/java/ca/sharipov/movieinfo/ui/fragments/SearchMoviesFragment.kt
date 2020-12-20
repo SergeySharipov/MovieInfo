@@ -32,6 +32,9 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val activity = activity as? MoviesActivity
+        activity?.supportActionBar?.title = "Search Movies"
+
         viewModel = (activity as MoviesActivity).viewModel
         setupRecyclerView()
 

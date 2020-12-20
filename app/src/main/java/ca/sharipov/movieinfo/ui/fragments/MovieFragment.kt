@@ -3,7 +3,6 @@ package ca.sharipov.movieinfo.ui.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import ca.sharipov.movieinfo.R
 import ca.sharipov.movieinfo.models.MovieBrief
@@ -13,7 +12,7 @@ import ca.sharipov.movieinfo.util.Constants
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_movie.*
 
-class MovieFragment : Fragment(R.layout.fragment_movie) {
+class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
 
     lateinit var viewModel: MoviesViewModel
     val args: MovieFragmentArgs by navArgs()
@@ -46,8 +45,13 @@ class MovieFragment : Fragment(R.layout.fragment_movie) {
 
     private fun isSaved(isSaved: Boolean) {
         if (isSaved)
-            fab.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_saved))
+            fab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_saved))
         else
-            fab.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_not_saved))
+            fab.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_not_saved
+                )
+            )
     }
 }

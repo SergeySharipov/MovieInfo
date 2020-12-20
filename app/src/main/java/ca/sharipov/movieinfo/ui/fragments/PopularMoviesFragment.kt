@@ -27,6 +27,9 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val activity = activity as? MoviesActivity
+        activity?.supportActionBar?.title = "Popular Movies"
+
         viewModel = (activity as MoviesActivity).viewModel
         setupRecyclerView()
 
