@@ -3,7 +3,6 @@ package ca.sharipov.movieinfo.ui.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +23,8 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
         super.onViewCreated(view, savedInstanceState)
         val activity = activity as? MoviesActivity
         activity?.supportActionBar?.title = "Saved Movies"
+        activity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        setHasOptionsMenu(false)
 
         viewModel = (activity as MoviesActivity).viewModel
         setupRecyclerView()
@@ -67,7 +68,7 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
             attachToRecyclerView(rvSavedMovies)
         }
 
-        viewModel.getSavedMovieBriefs().observe(viewLifecycleOwner, Observer { movieBrief ->
+        viewModel.getSavedMovieBriefs().observe(viewLifecycleOwner, { movieBrief ->
             moviesAdapter.differ.submitList(movieBrief)
         })
     }

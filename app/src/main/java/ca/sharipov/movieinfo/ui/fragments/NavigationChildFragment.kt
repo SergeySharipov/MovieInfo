@@ -22,13 +22,6 @@ abstract class NavigationChildFragment(contentLayoutId: Int) : Fragment(contentL
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onDestroyView() {
-        val activity = activity as? MoviesActivity
-        activity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        setHasOptionsMenu(false)
-        super.onDestroyView()
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val activity = activity as? MoviesActivity
         return when (item.itemId) {

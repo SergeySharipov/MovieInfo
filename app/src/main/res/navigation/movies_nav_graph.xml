@@ -42,9 +42,16 @@
     <fragment
         android:id="@+id/movieFragment"
         android:name="ca.sharipov.movieinfo.ui.fragments.MovieFragment"
-        android:label="MovieFragment" >
+        android:label="MovieFragment">
         <argument
             android:name="movieBrief"
             app:argType="ca.sharipov.movieinfo.models.MovieBrief" />
+        <action
+            android:id="@+id/action_movieFragment_to_movieFragment"
+            app:destination="@id/movieFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 </navigation>

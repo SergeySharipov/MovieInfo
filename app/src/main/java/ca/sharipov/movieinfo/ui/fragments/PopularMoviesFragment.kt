@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +28,8 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
         super.onViewCreated(view, savedInstanceState)
         val activity = activity as? MoviesActivity
         activity?.supportActionBar?.title = "Popular Movies"
+        activity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        setHasOptionsMenu(false)
 
         viewModel = (activity as MoviesActivity).viewModel
         setupRecyclerView()
@@ -43,7 +44,7 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
             )
         }
 
-        viewModel.popularMovieBriefs.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.popularMovieBriefs.observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
@@ -52,9 +53,6 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
                         moviesAdapter.differ.submitList(moviesResponse.results.toList())
                         val totalPages = moviesResponse.totalResults / QUERY_PAGE_SIZE + 2
                         isLastPage = viewModel.popularMovieBriefsPage == totalPages
-                        if (isLastPage) {
-                            // rvPopularMovies.setPadding(0, 0, 0, 0)
-                        }
                     }
                 }
                 is Resource.Error -> {

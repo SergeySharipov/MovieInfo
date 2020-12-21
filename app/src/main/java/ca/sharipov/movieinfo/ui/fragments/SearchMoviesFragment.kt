@@ -2,11 +2,12 @@ package ca.sharipov.movieinfo.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.AbsListView
+import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
 class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
 
     lateinit var viewModel: MoviesViewModel
@@ -34,6 +36,8 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
         super.onViewCreated(view, savedInstanceState)
         val activity = activity as? MoviesActivity
         activity?.supportActionBar?.title = "Search Movies"
+        activity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        setHasOptionsMenu(false)
 
         viewModel = (activity as MoviesActivity).viewModel
         setupRecyclerView()
@@ -48,20 +52,26 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
             )
         }
 
+        etSearch.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                performSearch(etSearch.text.toString())
+                return@OnEditorActionListener true
+            }
+            false
+        })
+
         var job: Job? = null
         etSearch.addTextChangedListener { editable ->
             job?.cancel()
             job = MainScope().launch {
                 delay(SEARCH_MOVIES_TIME_DELAY)
                 editable?.let {
-                    if (editable.toString().isNotEmpty()) {
-                        viewModel.searchMovieBriefs(editable.toString())
-                    }
+                    performSearch(editable.toString())
                 }
             }
         }
 
-        viewModel.searchMovieBriefs.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.searchMovieBriefs.observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
@@ -71,9 +81,6 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
                         val totalPages =
                             movieBriefsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
                         isLastPage = viewModel.searchMovieBriefsPage == totalPages
-                        if (isLastPage) {
-                            //rvSearchMovies.setPadding(0, 0, 0, 0)
-                        }
                     }
                 }
                 is Resource.Error -> {
@@ -96,6 +103,12 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
             } else {
                 hideErrorMessage()
             }
+        }
+    }
+
+    private fun performSearch(query: String) {
+        if (query.length > 1) {
+            viewModel.searchMovieBriefs(query)
         }
     }
 

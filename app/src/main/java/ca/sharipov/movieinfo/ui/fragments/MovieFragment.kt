@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import ca.sharipov.movieinfo.R
@@ -35,7 +36,9 @@ class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
         val movieBrief: MovieBrief = args.movieBrief
         Glide.with(this).load(Constants.POSTER_URL + movieBrief.posterPath).into(ivMovieImage)
         tvTitle.text = movieBrief.title
-        tvReleaseDate.text = movieBrief.releaseDate
+        if (movieBrief.releaseDate?.length!! > 4) {
+            tvReleaseDate.text = movieBrief.releaseDate.subSequence(0, 4)
+        }
         tvVoteAverage.text = movieBrief.voteAverage.toString()
         tvOverview.text = movieBrief.overview
 
@@ -95,6 +98,15 @@ class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
         rvSimilarMovies.apply {
             adapter = moviesAdapter
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        }
+        moviesAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("movieBrief", it)
+            }
+            findNavController().navigate(
+                R.id.action_movieFragment_to_movieFragment,
+                bundle
+            )
         }
     }
 
