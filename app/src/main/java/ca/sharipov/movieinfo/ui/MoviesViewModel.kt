@@ -145,8 +145,8 @@ class MoviesViewModel(
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> searchMovieBriefs.postValue(Resource.Error("Network Failure"))
-                else -> searchMovieBriefs.postValue(Resource.Error("Conversion Error"))
+                is IOException -> similarMovieBriefs.postValue(Resource.Error("Network Failure"))
+                else -> similarMovieBriefs.postValue(Resource.Error("Conversion Error"))
             }
         }
     }
