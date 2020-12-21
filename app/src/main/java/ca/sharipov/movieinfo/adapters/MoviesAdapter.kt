@@ -49,7 +49,7 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
         holder.itemView.apply {
             Glide.with(this).load(Constants.POSTER_URL + movie.posterPath).into(ivMovieImage)
             tvTitle.text = movie.title
-            if (movie.releaseDate?.length!! > 4) {
+            if (movie.releaseDate != null && movie.releaseDate.length > 4) {
                 tvReleaseDate.text = movie.releaseDate.subSequence(0, 4)
             }
             tvVoteAverage.text = movie.voteAverage.toString()

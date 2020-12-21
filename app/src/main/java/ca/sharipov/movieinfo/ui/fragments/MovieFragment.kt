@@ -36,7 +36,7 @@ class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
         val movieBrief: MovieBrief = args.movieBrief
         Glide.with(this).load(Constants.POSTER_URL + movieBrief.posterPath).into(ivMovieImage)
         tvTitle.text = movieBrief.title
-        if (movieBrief.releaseDate?.length!! > 4) {
+        if (movieBrief.releaseDate != null && movieBrief.releaseDate.length > 4) {
             tvReleaseDate.text = movieBrief.releaseDate.subSequence(0, 4)
         }
         tvVoteAverage.text = movieBrief.voteAverage.toString()
