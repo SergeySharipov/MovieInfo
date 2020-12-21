@@ -16,6 +16,9 @@ class MoviesRepository(
     suspend fun searchMovieByName(searchQuery: String, pageNumber: Int) =
         RetrofitInstance.api.searchMovieByName(searchQuery, pageNumber)
 
+    suspend fun getSimilarMovies(movieId: Int) =
+        RetrofitInstance.api.getSimilarMovies(movieId)
+
     suspend fun upsert(movieBrief: MovieBrief) = db.getMovieBriefDao().upsert(movieBrief)
 
     fun getAllMovieBriefs() = db.getMovieBriefDao().getAllMovieBriefs()

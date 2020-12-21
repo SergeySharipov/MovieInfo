@@ -2,8 +2,6 @@ package ca.sharipov.movieinfo.api
 
 import ca.sharipov.movieinfo.models.Movie
 import ca.sharipov.movieinfo.models.MovieBriefsResponse
-import ca.sharipov.movieinfo.util.Constants.Companion.API_KEY
-import ca.sharipov.movieinfo.util.Constants.Companion.APP_LANGUAGE
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -16,6 +14,12 @@ interface TmdbAPI {
         @Path("movie_id")
         movieId: Int
     ): Response<Movie>
+
+    @GET("3/movie/{movie_id}/similar")
+    suspend fun getSimilarMovies(
+        @Path("movie_id")
+        movieId: Int
+    ): Response<MovieBriefsResponse>
 
     @GET("3/discover/movie?sort_by=popularity.desc")
     suspend fun getPopularMovies(

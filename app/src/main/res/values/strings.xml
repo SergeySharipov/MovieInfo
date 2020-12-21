@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">MovieInfo</string>
+    <string name="fab_save_movie">Save Movie</string>
+    <string name="iv_movie_image">Movie Image</string>
+    <string name="iv_similar_movie_image">Similar Movie Image</string>
 </resources>
