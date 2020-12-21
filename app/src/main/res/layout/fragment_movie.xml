@@ -51,6 +51,7 @@
                         android:ellipsize="end"
                         android:lines="2"
                         android:maxLines="2"
+                        android:textStyle="bold"
                         android:text="Name one two three four five"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"

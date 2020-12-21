@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:ellipsize="end"
+            android:textStyle="bold"
             android:lines="2"
             android:maxLines="2"
             android:text="Name one two three four five"
