@@ -9,7 +9,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import ca.sharipov.movieinfo.R
+import ca.sharipov.movieinfo.adapters.GenresAdapter
 import ca.sharipov.movieinfo.adapters.SimilarMoviesAdapter
+import ca.sharipov.movieinfo.models.Genre
 import ca.sharipov.movieinfo.models.MovieBrief
 import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
@@ -24,6 +26,7 @@ class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
     val args: MovieFragmentArgs by navArgs()
     var isSaved: Boolean = false
     lateinit var moviesAdapter: SimilarMoviesAdapter
+    lateinit var genresAdapter: GenresAdapter
 
     val TAG = "MovieFragment"
 
@@ -31,7 +34,7 @@ class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = (activity as MoviesActivity).viewModel
-        setupRecyclerView()
+        setupSimilarMoviesRecyclerView()
 
         val movieBrief: MovieBrief = args.movieBrief
         Glide.with(this).load(Constants.POSTER_URL + movieBrief.posterPath).into(ivMovieImage)
@@ -49,6 +52,7 @@ class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
             })
 
         getSimilarMovies(movieBrief.id!!)
+        getMovieDetails(movieBrief.id!!)
 
         fab.setOnClickListener {
             if (isSaved) {
@@ -81,6 +85,38 @@ class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
         })
     }
 
+    private fun getMovieDetails(movieId: Int) {
+        viewModel.getMovie(movieId)
+        viewModel.movie.observe(viewLifecycleOwner, { response ->
+            when (response) {
+                is Resource.Success -> {
+                    response.data?.let { movieResponse ->
+                        setupGenresRecyclerView(movieResponse.genres)
+                    }
+                }
+                is Resource.Error -> {
+                    Log.d(TAG, "getMovie: error - " + response.message)
+                    response.message?.let { message ->
+                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                is Resource.Loading -> {
+                }
+            }
+        })
+    }
+
+    private fun setupGenresRecyclerView(genres: List<Genre>?) {
+        if (activity != null && genres != null) {
+            genresAdapter = GenresAdapter(genres)
+            rvGenres.apply {
+                adapter = genresAdapter
+                layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            }
+        }
+    }
+
     private fun isSaved(isSaved: Boolean) {
         if (isSaved)
             fab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_saved))
@@ -93,7 +129,7 @@ class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
             )
     }
 
-    private fun setupRecyclerView() {
+    private fun setupSimilarMoviesRecyclerView() {
         moviesAdapter = SimilarMoviesAdapter()
         rvSimilarMovies.apply {
             adapter = moviesAdapter

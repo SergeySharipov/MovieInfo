@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import ca.sharipov.movieinfo.MovieInfoApplication
+import ca.sharipov.movieinfo.models.Movie
 import ca.sharipov.movieinfo.models.MovieBrief
 import ca.sharipov.movieinfo.models.MovieBriefsResponse
 import ca.sharipov.movieinfo.repository.MoviesRepository
@@ -35,6 +36,9 @@ class MoviesViewModel(
     val similarMovieBriefs: MutableLiveData<Resource<MovieBriefsResponse>> = MutableLiveData()
     var similarMovieBriefsResponse: MovieBriefsResponse? = null
 
+    val movie: MutableLiveData<Resource<Movie>> = MutableLiveData()
+    var movieResponse: Movie? = null
+
 
     init {
         getPopularMovieBriefs()
@@ -50,6 +54,10 @@ class MoviesViewModel(
 
     fun getSimilarMovieBriefs(movieId: Int) = viewModelScope.launch {
         safeSimilarMovieBriefsCall(movieId)
+    }
+
+    fun getMovie(movieId: Int) = viewModelScope.launch {
+        safeGetMovieCall(movieId)
     }
 
     private fun handlePopularMovieBriefsResponse(response: Response<MovieBriefsResponse>): Resource<MovieBriefsResponse> {
@@ -92,6 +100,15 @@ class MoviesViewModel(
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(similarMovieBriefsResponse ?: resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    private fun handleGetMovieResponse(response: Response<Movie>): Resource<Movie> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(movieResponse ?: resultResponse)
             }
         }
         return Resource.Error(response.message())
@@ -147,6 +164,24 @@ class MoviesViewModel(
             when (t) {
                 is IOException -> similarMovieBriefs.postValue(Resource.Error("Network Failure"))
                 else -> similarMovieBriefs.postValue(Resource.Error("Conversion Error"))
+            }
+        }
+    }
+
+    private suspend fun safeGetMovieCall(movieId: Int) {
+        movie.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response =
+                    moviesRepository.getMovie(movieId)
+                movie.postValue(handleGetMovieResponse(response))
+            } else {
+                movie.postValue(Resource.Error("No internet connection"))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> movie.postValue(Resource.Error("Network Failure"))
+                else -> movie.postValue(Resource.Error("Conversion Error"))
             }
         }
     }

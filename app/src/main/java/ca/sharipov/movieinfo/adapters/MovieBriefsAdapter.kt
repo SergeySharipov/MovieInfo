@@ -12,9 +12,9 @@ import ca.sharipov.movieinfo.util.Constants
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_movie_preview.view.*
 
-class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
+class MovieBriefsAdapter : RecyclerView.Adapter<MovieBriefsAdapter.MovieViewHolder>() {
 
-    inner class MovieViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private val differCallback = object : DiffUtil.ItemCallback<MovieBrief>() {
         override fun areItemsTheSame(oldItem: MovieBrief, newItem: MovieBrief): Boolean {

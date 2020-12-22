@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ca.sharipov.movieinfo.R
-import ca.sharipov.movieinfo.adapters.MoviesAdapter
+import ca.sharipov.movieinfo.adapters.MovieBriefsAdapter
 import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_saved_movies.*
 class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
 
     lateinit var viewModel: MoviesViewModel
-    lateinit var moviesAdapter: MoviesAdapter
+    lateinit var movieBriefsAdapter: MovieBriefsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,7 +29,7 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
         viewModel = (activity as MoviesActivity).viewModel
         setupRecyclerView()
 
-        moviesAdapter.setOnItemClickListener {
+        movieBriefsAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
                 putSerializable("movieBrief", it)
             }
@@ -53,7 +53,7 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                val article = moviesAdapter.differ.currentList[position]
+                val article = movieBriefsAdapter.differ.currentList[position]
                 viewModel.deleteMovieBrief(article)
                 Snackbar.make(view, "Successfully deleted movie", Snackbar.LENGTH_LONG).apply {
                     setAction("Undo") {
@@ -69,14 +69,14 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
         }
 
         viewModel.getSavedMovieBriefs().observe(viewLifecycleOwner, { movieBrief ->
-            moviesAdapter.differ.submitList(movieBrief)
+            movieBriefsAdapter.differ.submitList(movieBrief)
         })
     }
 
     private fun setupRecyclerView() {
-        moviesAdapter = MoviesAdapter()
+        movieBriefsAdapter = MovieBriefsAdapter()
         rvSavedMovies.apply {
-            adapter = moviesAdapter
+            adapter = movieBriefsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
     }

@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ca.sharipov.movieinfo.R
-import ca.sharipov.movieinfo.adapters.MoviesAdapter
+import ca.sharipov.movieinfo.adapters.MovieBriefsAdapter
 import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
 import ca.sharipov.movieinfo.util.Constants.Companion.QUERY_PAGE_SIZE
@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.item_error_message.*
 class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
 
     lateinit var viewModel: MoviesViewModel
-    lateinit var moviesAdapter: MoviesAdapter
+    lateinit var movieBriefsAdapter: MovieBriefsAdapter
 
     val TAG = "PopularMoviesFragment"
 
@@ -34,7 +34,7 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
         viewModel = (activity as MoviesActivity).viewModel
         setupRecyclerView()
 
-        moviesAdapter.setOnItemClickListener {
+        movieBriefsAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
                 putSerializable("movieBrief", it)
             }
@@ -50,7 +50,7 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
                     hideProgressBar()
                     hideErrorMessage()
                     response.data?.let { moviesResponse ->
-                        moviesAdapter.differ.submitList(moviesResponse.results.toList())
+                        movieBriefsAdapter.differ.submitList(moviesResponse.results.toList())
                         val totalPages = moviesResponse.totalResults / QUERY_PAGE_SIZE + 2
                         isLastPage = viewModel.popularMovieBriefsPage == totalPages
                     }
@@ -132,9 +132,9 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
     }
 
     private fun setupRecyclerView() {
-        moviesAdapter = MoviesAdapter()
+        movieBriefsAdapter = MovieBriefsAdapter()
         rvPopularMovies.apply {
-            adapter = moviesAdapter
+            adapter = movieBriefsAdapter
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(this@PopularMoviesFragment.scrollListener)
         }

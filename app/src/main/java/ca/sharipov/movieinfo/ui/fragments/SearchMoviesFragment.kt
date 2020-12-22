@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ca.sharipov.movieinfo.R
-import ca.sharipov.movieinfo.adapters.MoviesAdapter
+import ca.sharipov.movieinfo.adapters.MovieBriefsAdapter
 import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
 import ca.sharipov.movieinfo.util.Constants
@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
 
     lateinit var viewModel: MoviesViewModel
-    lateinit var moviesAdapter: MoviesAdapter
+    lateinit var movieBriefsAdapter: MovieBriefsAdapter
     val TAG = "SearchMoviesFragment"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,7 +42,7 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
         viewModel = (activity as MoviesActivity).viewModel
         setupRecyclerView()
 
-        moviesAdapter.setOnItemClickListener {
+        movieBriefsAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
                 putSerializable("movieBrief", it)
             }
@@ -77,7 +77,7 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
                     hideProgressBar()
                     hideErrorMessage()
                     response.data?.let { movieBriefsResponse ->
-                        moviesAdapter.differ.submitList(movieBriefsResponse.results.toList())
+                        movieBriefsAdapter.differ.submitList(movieBriefsResponse.results.toList())
                         val totalPages =
                             movieBriefsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
                         isLastPage = viewModel.searchMovieBriefsPage == totalPages
@@ -171,9 +171,9 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
 
 
     private fun setupRecyclerView() {
-        moviesAdapter = MoviesAdapter()
+        movieBriefsAdapter = MovieBriefsAdapter()
         rvSearchMovies.apply {
-            adapter = moviesAdapter
+            adapter = movieBriefsAdapter
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(this@SearchMoviesFragment.scrollListener)
         }
