@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menuBtnSearch"
-        android:icon="@drawable/ic_search"
-        android:title="@string/menu_btn_search"
-        app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="ifRoom|withText" />
-
-    <item
         android:id="@+id/menuBtnAbout"
         android:icon="@drawable/ic_info"
         android:title="@string/menu_btn_about"

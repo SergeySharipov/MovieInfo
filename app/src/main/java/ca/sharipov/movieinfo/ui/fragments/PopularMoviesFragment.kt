@@ -1,9 +1,8 @@
 package ca.sharipov.movieinfo.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ca.sharipov.movieinfo.R
 import ca.sharipov.movieinfo.adapters.MovieBriefsAdapter
 import ca.sharipov.movieinfo.databinding.FragmentPopularMoviesBinding
+import ca.sharipov.movieinfo.ui.AboutActivity
 import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
 import ca.sharipov.movieinfo.util.Constants.Companion.QUERY_PAGE_SIZE
@@ -25,7 +25,7 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
 
     private var _binding: FragmentPopularMoviesBinding? = null
     private val binding get() = _binding!!
-    private val bindingToolbar get() = binding.includeToolbar
+    private val bindingToolbar get() = binding.toolbarPopular
     private val bindingContent get() = binding.contentPopularMovies
     private val bindingErrorMsg get() = bindingContent.itemErrorMessage
 
@@ -45,6 +45,23 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
         _binding = null
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        val activity = activity as? MoviesActivity
+        activity?.menuInflater?.inflate(R.menu.popular_fragment_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menuBtnAbout -> {
+                val intent = Intent(activity, AboutActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -52,7 +69,7 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
         activity?.setSupportActionBar(bindingToolbar.toolbar)
         activity?.supportActionBar?.title = "Popular Movies"
         activity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        setHasOptionsMenu(false)
+        setHasOptionsMenu(true)
 
         viewModel = (activity as MoviesActivity).viewModel
         setupRecyclerView()

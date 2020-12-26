@@ -1,5 +1,6 @@
 package ca.sharipov.movieinfo.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.AbsListView
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ca.sharipov.movieinfo.R
 import ca.sharipov.movieinfo.adapters.MovieBriefsAdapter
 import ca.sharipov.movieinfo.databinding.FragmentSearchMoviesBinding
+import ca.sharipov.movieinfo.ui.AboutActivity
 import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
 import ca.sharipov.movieinfo.util.Constants
@@ -27,7 +29,7 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
 
     private var _binding: FragmentSearchMoviesBinding? = null
     private val binding get() = _binding!!
-    private val bindingToolbar get() = binding.includeToolbar
+    private val bindingToolbar get() = binding.toolbarSearch
     private val bindingContent get() = binding.contentSearchMovies
     private val bindingErrorMsg get() = bindingContent.itemErrorMessage
 
@@ -73,6 +75,16 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menuBtnAbout -> {
+                val intent = Intent(activity, AboutActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

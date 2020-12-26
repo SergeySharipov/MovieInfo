@@ -71,9 +71,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         activity?.setSupportActionBar(binding.toolbar)
         activity?.supportActionBar?.title = ""
         activity?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            activity?.window?.statusBarColor = Color.TRANSPARENT
-//        }
 
         setHasOptionsMenu(true)
 
