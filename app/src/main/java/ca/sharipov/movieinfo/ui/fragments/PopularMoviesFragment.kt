@@ -1,7 +1,9 @@
 package ca.sharipov.movieinfo.ui.fragments
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -10,23 +12,44 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ca.sharipov.movieinfo.R
 import ca.sharipov.movieinfo.adapters.MovieBriefsAdapter
+import ca.sharipov.movieinfo.databinding.FragmentPopularMoviesBinding
 import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
 import ca.sharipov.movieinfo.util.Constants.Companion.QUERY_PAGE_SIZE
 import ca.sharipov.movieinfo.util.Resource
-import kotlinx.android.synthetic.main.fragment_popular_movies.*
-import kotlinx.android.synthetic.main.item_error_message.*
 
 class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
 
     lateinit var viewModel: MoviesViewModel
     lateinit var movieBriefsAdapter: MovieBriefsAdapter
 
+    private var _binding: FragmentPopularMoviesBinding? = null
+    private val binding get() = _binding!!
+    private val bindingToolbar get() = binding.includeToolbar
+    private val bindingContent get() = binding.contentPopularMovies
+    private val bindingErrorMsg get() = bindingContent.itemErrorMessage
+
     val TAG = "PopularMoviesFragment"
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentPopularMoviesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val activity = activity as? MoviesActivity
+        activity?.setSupportActionBar(bindingToolbar.toolbar)
         activity?.supportActionBar?.title = "Popular Movies"
         activity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
         setHasOptionsMenu(false)
@@ -69,29 +92,29 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
             }
         })
 
-        btnRetry.setOnClickListener {
+        bindingErrorMsg.btnRetry.setOnClickListener {
             viewModel.getPopularMovieBriefs()
         }
     }
 
     private fun hideProgressBar() {
-        paginationProgressBar.visibility = View.INVISIBLE
+        bindingContent.paginationProgressBar.visibility = View.INVISIBLE
         isLoading = false
     }
 
     private fun showProgressBar() {
-        paginationProgressBar.visibility = View.VISIBLE
+        bindingContent.paginationProgressBar.visibility = View.VISIBLE
         isLoading = true
     }
 
     private fun hideErrorMessage() {
-        itemErrorMessage.visibility = View.INVISIBLE
+        bindingErrorMsg.root.visibility = View.INVISIBLE
         isError = false
     }
 
     private fun showErrorMessage(message: String) {
-        itemErrorMessage.visibility = View.VISIBLE
-        tvErrorMessage.text = message
+        bindingErrorMsg.root.visibility = View.VISIBLE
+        bindingErrorMsg.tvErrorMessage.text = message
         isError = true
     }
 
@@ -133,18 +156,10 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
 
     private fun setupRecyclerView() {
         movieBriefsAdapter = MovieBriefsAdapter()
-        rvPopularMovies.apply {
+        bindingContent.rvPopularMovies.apply {
             adapter = movieBriefsAdapter
-            layoutManager = LinearLayoutManager(activity)
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             addOnScrollListener(this@PopularMoviesFragment.scrollListener)
         }
     }
 }
-
-
-
-
-
-
-
-

@@ -11,10 +11,10 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:contentDescription="@string/iv_movie_image"
             android:id="@+id/ivMovieImage"
             android:layout_width="100dp"
             android:layout_height="150dp"
+            android:contentDescription="@string/iv_movie_image"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,11 +26,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:ellipsize="end"
-            android:textStyle="bold"
             android:lines="2"
             android:maxLines="2"
-            android:text="Name one two three four five"
+            android:text="@string/test_title"
             android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/ivMovieImage"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,7 +43,7 @@
             android:ellipsize="end"
             android:lines="2"
             android:maxLines="2"
-            android:text="Overview one two three four five Overview one two three four five"
+            android:text="@string/test_description"
             android:textSize="15sp"
             app:layout_constraintBottom_toTopOf="@id/tvReleaseDate"
             app:layout_constraintEnd_toEndOf="parent"
@@ -56,12 +56,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:lines="1"
-            android:text="2011"
+            android:text="@string/test_year"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/ivMovieImage" />
 
         <ImageView
+            android:contentDescription="@string/iv_movie_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -75,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:lines="1"
-            android:text="5.0"
+            android:text="@string/test_vote"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

@@ -4,16 +4,16 @@
     <item
         android:id="@+id/popularMoviesFragment"
         android:icon="@drawable/ic_popular"
-        android:title="Popular" />
+        android:title="@string/nav_btn_popular" />
 
     <item
         android:id="@+id/savedMoviesFragment"
         android:icon="@drawable/ic_save"
-        android:title="Saved" />
+        android:title="@string/nav_btn_saved" />
 
     <item
         android:id="@+id/searchMoviesFragment"
         android:icon="@drawable/ic_search"
-        android:title="Search" />
+        android:title="@string/nav_btn_search" />
 
 </menu>

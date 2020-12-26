@@ -1,43 +1,86 @@
 package ca.sharipov.movieinfo.ui.fragments
 
 import android.os.Bundle
-import android.view.View
-import android.view.inputmethod.EditorInfo
+import android.view.*
 import android.widget.AbsListView
-import android.widget.TextView.OnEditorActionListener
+import android.widget.SearchView
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ca.sharipov.movieinfo.R
 import ca.sharipov.movieinfo.adapters.MovieBriefsAdapter
+import ca.sharipov.movieinfo.databinding.FragmentSearchMoviesBinding
 import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
 import ca.sharipov.movieinfo.util.Constants
-import ca.sharipov.movieinfo.util.Constants.Companion.SEARCH_MOVIES_TIME_DELAY
 import ca.sharipov.movieinfo.util.Resource
-import kotlinx.android.synthetic.main.fragment_search_movies.*
-import kotlinx.android.synthetic.main.item_error_message.*
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
 
     lateinit var viewModel: MoviesViewModel
     lateinit var movieBriefsAdapter: MovieBriefsAdapter
+    lateinit var searchView: SearchView
+    private var searchQuery: String? = null
+
+    private var _binding: FragmentSearchMoviesBinding? = null
+    private val binding get() = _binding!!
+    private val bindingToolbar get() = binding.includeToolbar
+    private val bindingContent get() = binding.contentSearchMovies
+    private val bindingErrorMsg get() = bindingContent.itemErrorMessage
+
     val TAG = "SearchMoviesFragment"
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSearchMoviesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onStop() {
+        super.onStop()
+        searchView.clearFocus()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        val activity = activity as? MoviesActivity
+        activity?.menuInflater?.inflate(R.menu.search_fragment_menu, menu)
+        val search: MenuItem = menu.findItem(R.id.menuBtnSearch)
+        searchView = search.actionView as SearchView
+        searchView.queryHint = "Search..."
+        searchView.isIconified = false
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                performSearch(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val activity = activity as? MoviesActivity
+        activity?.setSupportActionBar(bindingToolbar.toolbar)
         activity?.supportActionBar?.title = "Search Movies"
         activity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        setHasOptionsMenu(false)
+        setHasOptionsMenu(true)
 
         viewModel = (activity as MoviesActivity).viewModel
         setupRecyclerView()
@@ -50,25 +93,6 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
                 R.id.action_searchMoviesFragment_to_movieFragment,
                 bundle
             )
-        }
-
-        etSearch.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                performSearch(etSearch.text.toString())
-                return@OnEditorActionListener true
-            }
-            false
-        })
-
-        var job: Job? = null
-        etSearch.addTextChangedListener { editable ->
-            job?.cancel()
-            job = MainScope().launch {
-                delay(SEARCH_MOVIES_TIME_DELAY)
-                editable?.let {
-                    performSearch(editable.toString())
-                }
-            }
         }
 
         viewModel.searchMovieBriefs.observe(viewLifecycleOwner, { response ->
@@ -97,39 +121,38 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
             }
         })
 
-        btnRetry.setOnClickListener {
-            if (etSearch.text.toString().isNotEmpty()) {
-                viewModel.searchMovieBriefs(etSearch.text.toString())
-            } else {
-                hideErrorMessage()
-            }
+        bindingErrorMsg.btnRetry.setOnClickListener {
+            performSearch(searchQuery)
+            hideErrorMessage()
         }
     }
 
-    private fun performSearch(query: String) {
-        if (query.length > 1) {
+    private fun performSearch(query: String?) {
+        if (query != null && query.length > 1) {
+            searchQuery = query
+            searchView.clearFocus()
             viewModel.searchMovieBriefs(query)
         }
     }
 
     private fun hideProgressBar() {
-        paginationProgressBar.visibility = View.INVISIBLE
+        bindingContent.paginationProgressBar.visibility = View.INVISIBLE
         isLoading = false
     }
 
     private fun showProgressBar() {
-        paginationProgressBar.visibility = View.VISIBLE
+        bindingContent.paginationProgressBar.visibility = View.VISIBLE
         isLoading = true
     }
 
     private fun hideErrorMessage() {
-        itemErrorMessage.visibility = View.INVISIBLE
+        bindingContent.itemErrorMessage.root.visibility = View.INVISIBLE
         isError = false
     }
 
     private fun showErrorMessage(message: String) {
-        itemErrorMessage.visibility = View.VISIBLE
-        tvErrorMessage.text = message
+        bindingContent.itemErrorMessage.root.visibility = View.VISIBLE
+        bindingErrorMsg.tvErrorMessage.text = message
         isError = true
     }
 
@@ -138,7 +161,7 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
     var isLastPage = false
     var isScrolling = false
 
-    val scrollListener = object : RecyclerView.OnScrollListener() {
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
 
@@ -156,7 +179,7 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
                 isNoErrors && isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
                         isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
-                viewModel.searchMovieBriefs(etSearch.text.toString())
+                performSearch(searchQuery)
                 isScrolling = false
             }
         }
@@ -169,10 +192,9 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
         }
     }
 
-
     private fun setupRecyclerView() {
         movieBriefsAdapter = MovieBriefsAdapter()
-        rvSearchMovies.apply {
+        bindingContent.rvSearchMovies.apply {
             adapter = movieBriefsAdapter
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(this@SearchMoviesFragment.scrollListener)

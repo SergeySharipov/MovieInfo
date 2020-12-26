@@ -2,15 +2,20 @@ package ca.sharipov.movieinfo.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import ca.sharipov.movieinfo.R
 import ca.sharipov.movieinfo.adapters.GenresAdapter
 import ca.sharipov.movieinfo.adapters.SimilarMoviesAdapter
+import ca.sharipov.movieinfo.databinding.FragmentMovieDetailsBinding
 import ca.sharipov.movieinfo.models.Genre
 import ca.sharipov.movieinfo.models.MovieBrief
 import ca.sharipov.movieinfo.ui.MoviesActivity
@@ -18,32 +23,74 @@ import ca.sharipov.movieinfo.ui.MoviesViewModel
 import ca.sharipov.movieinfo.util.Constants
 import ca.sharipov.movieinfo.util.Resource
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_movie.*
 
-class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
+
+class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     lateinit var viewModel: MoviesViewModel
-    val args: MovieFragmentArgs by navArgs()
-    var isSaved: Boolean = false
+    val args: MovieDetailsFragmentArgs by navArgs()
     lateinit var moviesAdapter: SimilarMoviesAdapter
     lateinit var genresAdapter: GenresAdapter
+    private var isSaved: Boolean = false
+
+    private var _binding: FragmentMovieDetailsBinding? = null
+    private val binding get() = _binding!!
+    private val bindingContent get() = binding.contentMovieDetails
 
     val TAG = "MovieFragment"
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val activity = activity as? MoviesActivity
+        return when (item.itemId) {
+            android.R.id.home -> {
+                activity?.onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val activity = activity as? MoviesActivity
+        activity?.setSupportActionBar(binding.toolbar)
+        activity?.supportActionBar?.title = ""
+        activity?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            activity?.window?.statusBarColor = Color.TRANSPARENT
+//        }
+
+        setHasOptionsMenu(true)
 
         viewModel = (activity as MoviesActivity).viewModel
         setupSimilarMoviesRecyclerView()
 
         val movieBrief: MovieBrief = args.movieBrief
-        Glide.with(this).load(Constants.POSTER_URL + movieBrief.posterPath).into(ivMovieImage)
-        tvTitle.text = movieBrief.title
+        Glide.with(this).load(Constants.BACKDROP_URL + movieBrief.backdropPath)
+            .into(binding.toolbarBackground)
+        Glide.with(this).load(Constants.POSTER_URL + movieBrief.posterPath)
+            .into(bindingContent.ivMovieImage)
+        bindingContent.tvTitle.text = movieBrief.title
         if (movieBrief.releaseDate != null && movieBrief.releaseDate.length > 4) {
-            tvReleaseDate.text = movieBrief.releaseDate.subSequence(0, 4)
+            bindingContent.tvReleaseDate.text = movieBrief.releaseDate.subSequence(0, 4)
         }
-        tvVoteAverage.text = movieBrief.voteAverage.toString()
-        tvOverview.text = movieBrief.overview
+        bindingContent.tvVoteAverage.text = movieBrief.voteAverage.toString()
+        bindingContent.tvOverview.text = movieBrief.overview
 
         viewModel.getMovieBrief(movieBrief.id!!)
             .observe(viewLifecycleOwner, { movieBriefSaved ->
@@ -54,7 +101,7 @@ class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
         getSimilarMovies(movieBrief.id!!)
         getMovieDetails(movieBrief.id!!)
 
-        fab.setOnClickListener {
+        binding.fab.setOnClickListener {
             if (isSaved) {
                 viewModel.deleteMovieBrief(movieBrief)
             } else {
@@ -110,7 +157,7 @@ class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
     private fun setupGenresRecyclerView(genres: List<Genre>?) {
         if (activity != null && genres != null) {
             genresAdapter = GenresAdapter(genres)
-            rvGenres.apply {
+            bindingContent.rvGenres.apply {
                 adapter = genresAdapter
                 layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             }
@@ -119,9 +166,14 @@ class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
 
     private fun isSaved(isSaved: Boolean) {
         if (isSaved)
-            fab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_saved))
+            binding.fab.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_saved
+                )
+            )
         else
-            fab.setImageDrawable(
+            binding.fab.setImageDrawable(
                 ContextCompat.getDrawable(
                     requireContext(),
                     R.drawable.ic_not_saved
@@ -131,7 +183,7 @@ class MovieFragment : NavigationChildFragment(R.layout.fragment_movie) {
 
     private fun setupSimilarMoviesRecyclerView() {
         moviesAdapter = SimilarMoviesAdapter()
-        rvSimilarMovies.apply {
+        bindingContent.rvSimilarMovies.apply {
             adapter = moviesAdapter
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         }

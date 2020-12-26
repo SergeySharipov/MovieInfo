@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:ellipsize="end"
-            android:text="Name one two three four five"
+            android:text="@string/test_title"
             android:textStyle="bold"
             android:lines="2"
             android:maxLines="2"
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="2011"
+            android:text="@string/test_year"
             android:lines="1"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -48,6 +48,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
         <ImageView
+            android:contentDescription="@string/iv_movie_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="1dp"
@@ -60,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="5.0"
+            android:text="@string/test_vote"
             android:lines="1"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"

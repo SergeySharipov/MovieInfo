@@ -1,6 +1,22 @@
 <resources>
     <string name="app_name">MovieInfo</string>
+    <string name="nav_btn_popular">Popular</string>
+    <string name="nav_btn_saved">Saved</string>
+    <string name="nav_btn_search">Search</string>
+    <string name="menu_btn_search">Search</string>
     <string name="fab_save_movie">Save Movie</string>
     <string name="iv_movie_image">Movie Image</string>
+    <string name="iv_movie_rating">Movie Rating</string>
     <string name="iv_similar_movie_image">Similar Movie Image</string>
+    <string name="toolbar_iv_movie_image">Movie Image</string>
+
+    <string name="error_msg">Failed to connect</string>
+    <string name="btn_retry">Retry</string>
+
+    <string name="test_title">Name one two three four five</string>
+    <string name="test_description">Overview one two three four five Overview one two three four five</string>
+    <string name="test_year">2011</string>
+    <string name="test_vote">5.0</string>
+    <string name="test_genre">Comedy</string>
+
 </resources>
