@@ -8,10 +8,11 @@
         android:id="@+id/toolbarSaved"
         layout="@layout/toolbar" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSavedMovies"
+    <include
+        android:id="@+id/contentSavedMovies"
+        layout="@layout/content_saved_movies"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize" />
+        android:layout_marginTop="@dimen/app_bar_height" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

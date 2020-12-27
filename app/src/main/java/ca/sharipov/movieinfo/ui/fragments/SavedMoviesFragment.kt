@@ -24,6 +24,7 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
     private var _binding: FragmentSavedMoviesBinding? = null
     private val binding get() = _binding!!
     private val bindingToolbar get() = binding.toolbarSaved
+    private val bindingContent get() = binding.contentSavedMovies
 
     val TAG = "PopularMoviesFragment"
 
@@ -93,11 +94,11 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                val article = movieBriefsAdapter.differ.currentList[position]
-                viewModel.deleteMovieBrief(article)
+                val movieBrief = movieBriefsAdapter.differ.currentList[position]
+                viewModel.deleteMovieBrief(movieBrief)
                 Snackbar.make(view, "Successfully deleted movie", Snackbar.LENGTH_LONG).apply {
                     setAction("Undo") {
-                        viewModel.saveMovieBrief(article)
+                        viewModel.saveMovieBrief(movieBrief)
                     }
                     show()
                 }
@@ -105,17 +106,30 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
         }
 
         ItemTouchHelper(itemTouchHelperCallback).apply {
-            attachToRecyclerView(binding.rvSavedMovies)
+            attachToRecyclerView(bindingContent.rvSavedMovies)
         }
 
         viewModel.getSavedMovieBriefs().observe(viewLifecycleOwner, { movieBrief ->
+            if (movieBrief.isEmpty()) {
+                showNothingSavedMessage()
+            } else {
+                hideNothingSavedMessage()
+            }
             movieBriefsAdapter.differ.submitList(movieBrief)
         })
     }
 
+    private fun hideNothingSavedMessage() {
+        bindingContent.messageNothingSaved.visibility = View.INVISIBLE
+    }
+
+    private fun showNothingSavedMessage() {
+        bindingContent.messageNothingSaved.visibility = View.VISIBLE
+    }
+
     private fun setupRecyclerView() {
         movieBriefsAdapter = MovieBriefsAdapter()
-        binding.rvSavedMovies.apply {
+        bindingContent.rvSavedMovies.apply {
             adapter = movieBriefsAdapter
             layoutManager = LinearLayoutManager(activity)
         }

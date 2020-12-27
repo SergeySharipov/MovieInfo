@@ -26,6 +26,7 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
     lateinit var movieBriefsAdapter: MovieBriefsAdapter
     lateinit var searchView: SearchView
     private var searchQuery: String? = null
+    private val SEARCH_QUERY = "SEARCH_QUERY"
 
     private var _binding: FragmentSearchMoviesBinding? = null
     private val binding get() = _binding!!
@@ -86,7 +87,15 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(SEARCH_QUERY, searchQuery)
+        super.onSaveInstanceState(outState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            searchQuery = savedInstanceState.getString(SEARCH_QUERY)
+        }
         super.onViewCreated(view, savedInstanceState)
         val activity = activity as? MoviesActivity
         activity?.setSupportActionBar(bindingToolbar.toolbar)
