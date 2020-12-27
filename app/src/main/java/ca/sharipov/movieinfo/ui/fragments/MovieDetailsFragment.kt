@@ -2,10 +2,8 @@ package ca.sharipov.movieinfo.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -21,6 +19,7 @@ import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
 import ca.sharipov.movieinfo.util.Constants
 import ca.sharipov.movieinfo.util.Resource
+import ca.sharipov.movieinfo.util.copyToClipboard
 import com.bumptech.glide.Glide
 
 
@@ -31,6 +30,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     lateinit var moviesAdapter: SimilarMoviesAdapter
     lateinit var genresAdapter: GenresAdapter
     private var isSaved: Boolean = false
+    private var movieTitleAndReleaseYear: String = ""
 
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
@@ -52,9 +52,19 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         _binding = null
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        val activity = activity as? MoviesActivity
+        activity?.menuInflater?.inflate(R.menu.movie_details_fragment_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val activity = activity as? MoviesActivity
         return when (item.itemId) {
+            R.id.menuBtnCopy -> {
+                copyMovieDetailsToClipboard()
+                true
+            }
             android.R.id.home -> {
                 activity?.onBackPressed()
                 true
@@ -70,7 +80,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         activity?.setSupportActionBar(binding.toolbar)
         activity?.supportActionBar?.title = ""
         activity?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         setHasOptionsMenu(true)
 
         viewModel = (activity as MoviesActivity).viewModel
@@ -82,9 +91,13 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         Glide.with(this).load(Constants.POSTER_URL + movieBrief.posterPath)
             .into(bindingContent.ivMovieImage)
         bindingContent.tvTitle.text = movieBrief.title
+
+        var releaseYear = ""
         if (movieBrief.releaseDate != null && movieBrief.releaseDate.length > 4) {
-            bindingContent.tvReleaseDate.text = movieBrief.releaseDate.subSequence(0, 4)
+            releaseYear = movieBrief.releaseDate.subSequence(0, 4).toString()
+            bindingContent.tvReleaseDate.text = releaseYear
         }
+
         bindingContent.tvVoteAverage.text = movieBrief.voteAverage.toString()
         bindingContent.tvOverview.text = movieBrief.overview
 
@@ -97,12 +110,24 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         getSimilarMovies(movieBrief.id!!)
         getMovieDetails(movieBrief.id!!)
 
+        movieTitleAndReleaseYear = movieBrief.title + " " + releaseYear
+        bindingContent.tvTitle.setOnClickListener {
+            copyMovieDetailsToClipboard()
+        }
+
         binding.fab.setOnClickListener {
             if (isSaved) {
                 viewModel.deleteMovieBrief(movieBrief)
             } else {
                 viewModel.saveMovieBrief(movieBrief)
             }
+        }
+    }
+
+    private fun copyMovieDetailsToClipboard() {
+        activity.let {
+            it?.copyToClipboard(movieTitleAndReleaseYear)
+            Toast.makeText(it, R.string.msg_copied, Toast.LENGTH_SHORT).show()
         }
     }
 
