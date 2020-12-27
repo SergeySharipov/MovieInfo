@@ -63,7 +63,7 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
         super.onViewCreated(view, savedInstanceState)
         val activity = activity as? MoviesActivity
         activity?.setSupportActionBar(bindingToolbar.toolbar)
-        activity?.supportActionBar?.title = "Saved Movies"
+        activity?.supportActionBar?.title = getString(R.string.title_saved)
         activity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
         setHasOptionsMenu(true)
 
@@ -96,12 +96,13 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
                 val position = viewHolder.adapterPosition
                 val movieBrief = movieBriefsAdapter.differ.currentList[position]
                 viewModel.deleteMovieBrief(movieBrief)
-                Snackbar.make(view, "Successfully deleted movie", Snackbar.LENGTH_LONG).apply {
-                    setAction("Undo") {
-                        viewModel.saveMovieBrief(movieBrief)
+                Snackbar.make(view, getString(R.string.msg_movie_deleted), Snackbar.LENGTH_LONG)
+                    .apply {
+                        setAction(getString(R.string.msg_undo)) {
+                            viewModel.saveMovieBrief(movieBrief)
+                        }
+                        show()
                     }
-                    show()
-                }
             }
         }
 

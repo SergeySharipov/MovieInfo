@@ -8,9 +8,6 @@ class Constants {
         const val POSTER_URL = "http://image.tmdb.org/t/p/w342"
         const val BACKDROP_URL = "http://image.tmdb.org/t/p/w780"
 
-        const val SEARCH_MOVIES_TIME_DELAY = 500L
-        const val QUERY_PAGE_SIZE = 20
-
-        const val APP_LANGUAGE = "en"
+        const val QUERY_PAGE_SIZE = 19
     }
 }

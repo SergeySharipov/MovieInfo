@@ -8,7 +8,7 @@ import android.os.Build
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import ca.sharipov.movieinfo.MovieInfoApplication
+import ca.sharipov.movieinfo.R
 import ca.sharipov.movieinfo.models.Movie
 import ca.sharipov.movieinfo.models.MovieBrief
 import ca.sharipov.movieinfo.models.MovieBriefsResponse
@@ -19,8 +19,8 @@ import retrofit2.Response
 import java.io.IOException
 
 class MoviesViewModel(
-    app: Application,
-    val moviesRepository: MoviesRepository
+    val app: Application,
+    private val moviesRepository: MoviesRepository
 ) : AndroidViewModel(app) {
 
     val popularMovieBriefs: MutableLiveData<Resource<MovieBriefsResponse>> = MutableLiveData()
@@ -123,12 +123,12 @@ class MoviesViewModel(
                     moviesRepository.searchMovieByName(searchQuery, searchMovieBriefsPage)
                 searchMovieBriefs.postValue(handleSearchMovieBriefsResponse(response))
             } else {
-                searchMovieBriefs.postValue(Resource.Error("No internet connection"))
+                searchMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_no_connection)))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> searchMovieBriefs.postValue(Resource.Error("Network Failure"))
-                else -> searchMovieBriefs.postValue(Resource.Error("Conversion Error"))
+                is IOException -> searchMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_network_failure)))
+                else -> searchMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_conversion_error)))
             }
         }
     }
@@ -140,12 +140,12 @@ class MoviesViewModel(
                 val response = moviesRepository.getPopularMovies(popularMovieBriefsPage)
                 popularMovieBriefs.postValue(handlePopularMovieBriefsResponse(response))
             } else {
-                popularMovieBriefs.postValue(Resource.Error("No internet connection"))
+                popularMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_no_connection)))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> popularMovieBriefs.postValue(Resource.Error("Network Failure"))
-                else -> popularMovieBriefs.postValue(Resource.Error("Conversion Error"))
+                is IOException -> popularMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_network_failure)))
+                else -> popularMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_conversion_error)))
             }
         }
     }
@@ -158,12 +158,12 @@ class MoviesViewModel(
                     moviesRepository.getSimilarMovies(movieId)
                 similarMovieBriefs.postValue(handleSimilarMovieBriefsResponse(response))
             } else {
-                similarMovieBriefs.postValue(Resource.Error("No internet connection"))
+                similarMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_no_connection)))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> similarMovieBriefs.postValue(Resource.Error("Network Failure"))
-                else -> similarMovieBriefs.postValue(Resource.Error("Conversion Error"))
+                is IOException -> similarMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_network_failure)))
+                else -> similarMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_conversion_error)))
             }
         }
     }
@@ -176,18 +176,18 @@ class MoviesViewModel(
                     moviesRepository.getMovie(movieId)
                 movie.postValue(handleGetMovieResponse(response))
             } else {
-                movie.postValue(Resource.Error("No internet connection"))
+                movie.postValue(Resource.Error(app.getString(R.string.msg_no_connection)))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> movie.postValue(Resource.Error("Network Failure"))
-                else -> movie.postValue(Resource.Error("Conversion Error"))
+                is IOException -> movie.postValue(Resource.Error(app.getString(R.string.msg_network_failure)))
+                else -> movie.postValue(Resource.Error(app.getString(R.string.msg_conversion_error)))
             }
         }
     }
 
     private fun hasInternetConnection(): Boolean {
-        val connectivityManager = getApplication<MovieInfoApplication>().getSystemService(
+        val connectivityManager = app.getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as ConnectivityManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

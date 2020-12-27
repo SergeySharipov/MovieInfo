@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import ca.sharipov.movieinfo.BuildConfig
+import ca.sharipov.movieinfo.R
 import ca.sharipov.movieinfo.databinding.ActivityAboutBinding
 
 class AboutActivity : AppCompatActivity() {
@@ -17,7 +18,7 @@ class AboutActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         setSupportActionBar(bindingToolbar.toolbar)
-        supportActionBar?.title = "About"
+        supportActionBar?.title = getString(R.string.title_about)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding.tvVersion.text = BuildConfig.VERSION_NAME

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.AbsListView
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -99,7 +98,7 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
         super.onViewCreated(view, savedInstanceState)
         val activity = activity as? MoviesActivity
         activity?.setSupportActionBar(bindingToolbar.toolbar)
-        activity?.supportActionBar?.title = "Search Movies"
+        activity?.supportActionBar?.title = getString(R.string.title_search)
         activity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
         setHasOptionsMenu(true)
 
@@ -123,16 +122,14 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
                     hideErrorMessage()
                     response.data?.let { movieBriefsResponse ->
                         movieBriefsAdapter.differ.submitList(movieBriefsResponse.results.toList())
-                        val totalPages =
-                            movieBriefsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
+                        val totalPages: Int =
+                            movieBriefsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 1
                         isLastPage = viewModel.searchMovieBriefsPage == totalPages
                     }
                 }
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_SHORT)
-                            .show()
                         showErrorMessage(message)
                     }
                 }

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.AbsListView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -67,7 +66,7 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
 
         val activity = activity as? MoviesActivity
         activity?.setSupportActionBar(bindingToolbar.toolbar)
-        activity?.supportActionBar?.title = "Popular Movies"
+        activity?.supportActionBar?.title = getString(R.string.title_popular)
         activity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
         setHasOptionsMenu(true)
 
@@ -91,15 +90,13 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
                     hideErrorMessage()
                     response.data?.let { moviesResponse ->
                         movieBriefsAdapter.differ.submitList(moviesResponse.results.toList())
-                        val totalPages = moviesResponse.totalResults / QUERY_PAGE_SIZE + 2
+                        val totalPages: Int = moviesResponse.totalResults / QUERY_PAGE_SIZE + 1
                         isLastPage = viewModel.popularMovieBriefsPage == totalPages
                     }
                 }
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_SHORT)
-                            .show()
                         showErrorMessage(message)
                     }
                 }

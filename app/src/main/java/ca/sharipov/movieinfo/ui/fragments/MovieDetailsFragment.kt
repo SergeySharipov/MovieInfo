@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -118,10 +117,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                 }
                 is Resource.Error -> {
                     Log.d(TAG, "getSimilarMovieBriefs: error - " + response.message)
-                    response.message?.let { message ->
-                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_SHORT)
-                            .show()
-                    }
                 }
                 is Resource.Loading -> {
                 }
@@ -140,10 +135,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                 }
                 is Resource.Error -> {
                     Log.d(TAG, "getMovie: error - " + response.message)
-                    response.message?.let { message ->
-                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_SHORT)
-                            .show()
-                    }
                 }
                 is Resource.Loading -> {
                 }
