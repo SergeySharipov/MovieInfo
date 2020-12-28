@@ -15,7 +15,9 @@ import ca.sharipov.movieinfo.ui.AboutActivity
 import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
 
     lateinit var viewModel: MoviesViewModel

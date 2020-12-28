@@ -17,8 +17,9 @@ import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
 import ca.sharipov.movieinfo.util.Constants
 import ca.sharipov.movieinfo.util.Resource
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
 
     lateinit var viewModel: MoviesViewModel
@@ -129,8 +130,8 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
                 }
                 is Resource.Error -> {
                     hideProgressBar()
-                    response.message?.let { message ->
-                        showErrorMessage(message)
+                    response.messageResId?.let { messageResId ->
+                        showErrorMessage(getString(messageResId))
                     }
                 }
                 is Resource.Loading -> {

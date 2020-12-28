@@ -16,7 +16,9 @@ import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
 import ca.sharipov.movieinfo.util.Constants.Companion.QUERY_PAGE_SIZE
 import ca.sharipov.movieinfo.util.Resource
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
 
     lateinit var viewModel: MoviesViewModel
@@ -96,8 +98,8 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
                 }
                 is Resource.Error -> {
                     hideProgressBar()
-                    response.message?.let { message ->
-                        showErrorMessage(message)
+                    response.messageResId?.let { messageResId ->
+                        showErrorMessage(getString(messageResId))
                     }
                 }
                 is Resource.Loading -> {

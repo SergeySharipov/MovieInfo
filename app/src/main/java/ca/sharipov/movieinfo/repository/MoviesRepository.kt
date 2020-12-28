@@ -1,31 +1,26 @@
 package ca.sharipov.movieinfo.repository
 
-import ca.sharipov.movieinfo.api.RetrofitInstance
-import ca.sharipov.movieinfo.db.MovieBriefDatabase
+import androidx.lifecycle.LiveData
+import ca.sharipov.movieinfo.models.Movie
 import ca.sharipov.movieinfo.models.MovieBrief
+import ca.sharipov.movieinfo.models.MovieBriefsResponse
+import retrofit2.Response
 
-class MoviesRepository(
-    val db: MovieBriefDatabase
-) {
-    suspend fun getMovie(movieId: Int) =
-        RetrofitInstance.api.getMovie(movieId)
+interface MoviesRepository {
 
-    suspend fun getPopularMovies(pageNumber: Int) =
-        RetrofitInstance.api.getPopularMovies(pageNumber)
+    suspend fun getMovie(movieId: Int): Response<Movie>
 
-    suspend fun searchMovieByName(searchQuery: String, pageNumber: Int) =
-        RetrofitInstance.api.searchMovieByName(searchQuery, pageNumber)
+    suspend fun getPopularMovies(pageNumber: Int): Response<MovieBriefsResponse>
 
-    suspend fun getSimilarMovies(movieId: Int) =
-        RetrofitInstance.api.getSimilarMovies(movieId)
+    suspend fun searchMovieByName(searchQuery: String, pageNumber: Int): Response<MovieBriefsResponse>
 
-    suspend fun upsert(movieBrief: MovieBrief) = db.getMovieBriefDao().upsert(movieBrief)
+    suspend fun getSimilarMovies(movieId: Int): Response<MovieBriefsResponse>
 
-    fun getAllMovieBriefs() = db.getMovieBriefDao().getAllMovieBriefs()
+    suspend fun upsert(movieBrief: MovieBrief): Long
 
-    suspend fun deleteMovieBrief(movieBrief: MovieBrief) =
-        db.getMovieBriefDao().deleteMovieBrief(movieBrief)
+    fun getAllMovieBriefs(): LiveData<List<MovieBrief>>
 
-    fun getMovieBrief(id: Int) =
-        db.getMovieBriefDao().getMovieBrief(id)
+    suspend fun deleteMovieBrief(movieBrief: MovieBrief)
+
+    fun getMovieBrief(id: Int): LiveData<MovieBrief>
 }

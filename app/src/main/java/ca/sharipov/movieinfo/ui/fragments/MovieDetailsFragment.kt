@@ -15,15 +15,22 @@ import ca.sharipov.movieinfo.adapters.SimilarMoviesAdapter
 import ca.sharipov.movieinfo.databinding.FragmentMovieDetailsBinding
 import ca.sharipov.movieinfo.models.Genre
 import ca.sharipov.movieinfo.models.MovieBrief
+import ca.sharipov.movieinfo.repository.MoviesRepository
 import ca.sharipov.movieinfo.ui.MoviesActivity
 import ca.sharipov.movieinfo.ui.MoviesViewModel
 import ca.sharipov.movieinfo.util.Constants
 import ca.sharipov.movieinfo.util.Resource
 import ca.sharipov.movieinfo.util.copyToClipboard
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
+
+    @Inject
+    lateinit var glide: RequestManager
 
     lateinit var viewModel: MoviesViewModel
     val args: MovieDetailsFragmentArgs by navArgs()
@@ -86,9 +93,9 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         setupSimilarMoviesRecyclerView()
 
         val movieBrief: MovieBrief = args.movieBrief
-        Glide.with(this).load(Constants.BACKDROP_URL + movieBrief.backdropPath)
+        glide.load(Constants.BACKDROP_URL + movieBrief.backdropPath)
             .into(binding.toolbarBackground)
-        Glide.with(this).load(Constants.POSTER_URL + movieBrief.posterPath)
+        glide.load(Constants.POSTER_URL + movieBrief.posterPath)
             .into(bindingContent.ivMovieImage)
         bindingContent.tvTitle.text = movieBrief.title
 
@@ -141,7 +148,9 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                     }
                 }
                 is Resource.Error -> {
-                    Log.d(TAG, "getSimilarMovieBriefs: error - " + response.message)
+                    response.messageResId?.let { messageResId ->
+                        Log.e(TAG, "getSimilarMovies: " + getString(messageResId))
+                    }
                 }
                 is Resource.Loading -> {
                 }
@@ -159,7 +168,9 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                     }
                 }
                 is Resource.Error -> {
-                    Log.d(TAG, "getMovie: error - " + response.message)
+                    response.messageResId?.let { messageResId ->
+                        Log.e(TAG, "getMovieDetails: " + getString(messageResId))
+                    }
                 }
                 is Resource.Loading -> {
                 }

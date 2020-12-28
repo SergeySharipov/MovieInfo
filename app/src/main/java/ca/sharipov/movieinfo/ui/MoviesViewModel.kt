@@ -1,27 +1,29 @@
 package ca.sharipov.movieinfo.ui
 
-import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.*
-import android.os.Build
-import androidx.lifecycle.AndroidViewModel
+import android.util.Log
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ca.sharipov.movieinfo.R
 import ca.sharipov.movieinfo.models.Movie
 import ca.sharipov.movieinfo.models.MovieBrief
 import ca.sharipov.movieinfo.models.MovieBriefsResponse
 import ca.sharipov.movieinfo.repository.MoviesRepository
+import ca.sharipov.movieinfo.util.InternetConnectionUtil
 import ca.sharipov.movieinfo.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
+import javax.inject.Inject
 
-class MoviesViewModel(
-    val app: Application,
-    private val moviesRepository: MoviesRepository
-) : AndroidViewModel(app) {
+class MoviesViewModel @ViewModelInject constructor(
+    private val repository: MoviesRepository,
+    private val connection: InternetConnectionUtil
+) : ViewModel() {
+
+    private val TAG = "MoviesViewModel"
 
     val popularMovieBriefs: MutableLiveData<Resource<MovieBriefsResponse>> = MutableLiveData()
     var popularMovieBriefsPage = 1
@@ -74,7 +76,8 @@ class MoviesViewModel(
                 return Resource.Success(popularMovieBriefsResponse ?: resultResponse)
             }
         }
-        return Resource.Error(response.message())
+        Log.e(TAG, "handlePopularMovieBriefsResponse: " + response.message())
+        return Resource.Error(R.string.msg_unknown_error)
     }
 
     private fun handleSearchMovieBriefsResponse(response: Response<MovieBriefsResponse>): Resource<MovieBriefsResponse> {
@@ -93,7 +96,8 @@ class MoviesViewModel(
                 return Resource.Success(searchMovieBriefsResponse ?: resultResponse)
             }
         }
-        return Resource.Error(response.message())
+        Log.e(TAG, "handleSearchMovieBriefsResponse: " + response.message())
+        return Resource.Error(R.string.msg_unknown_error)
     }
 
     private fun handleSimilarMovieBriefsResponse(response: Response<MovieBriefsResponse>): Resource<MovieBriefsResponse> {
@@ -102,7 +106,8 @@ class MoviesViewModel(
                 return Resource.Success(similarMovieBriefsResponse ?: resultResponse)
             }
         }
-        return Resource.Error(response.message())
+        Log.e(TAG, "handleSimilarMovieBriefsResponse: " + response.message())
+        return Resource.Error(R.string.msg_unknown_error)
     }
 
     private fun handleGetMovieResponse(response: Response<Movie>): Resource<Movie> {
@@ -111,24 +116,25 @@ class MoviesViewModel(
                 return Resource.Success(movieResponse ?: resultResponse)
             }
         }
-        return Resource.Error(response.message())
+        Log.e(TAG, "handleGetMovieResponse: " + response.message())
+        return Resource.Error(R.string.msg_unknown_error)
     }
 
     private suspend fun safeSearchMovieBriefsCall(searchQuery: String) {
         newSearchQuery = searchQuery
         searchMovieBriefs.postValue(Resource.Loading())
         try {
-            if (hasInternetConnection()) {
+            if (connection.hasInternetConnection()) {
                 val response =
-                    moviesRepository.searchMovieByName(searchQuery, searchMovieBriefsPage)
+                    repository.searchMovieByName(searchQuery, searchMovieBriefsPage)
                 searchMovieBriefs.postValue(handleSearchMovieBriefsResponse(response))
             } else {
-                searchMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_no_connection)))
+                searchMovieBriefs.postValue(Resource.Error(R.string.msg_no_connection))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> searchMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_network_failure)))
-                else -> searchMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_conversion_error)))
+                is IOException -> searchMovieBriefs.postValue(Resource.Error(R.string.msg_network_failure))
+                else -> searchMovieBriefs.postValue(Resource.Error(R.string.msg_conversion_error))
             }
         }
     }
@@ -136,16 +142,16 @@ class MoviesViewModel(
     private suspend fun safePopularMovieBriefsCall() {
         popularMovieBriefs.postValue(Resource.Loading())
         try {
-            if (hasInternetConnection()) {
-                val response = moviesRepository.getPopularMovies(popularMovieBriefsPage)
+            if (connection.hasInternetConnection()) {
+                val response = repository.getPopularMovies(popularMovieBriefsPage)
                 popularMovieBriefs.postValue(handlePopularMovieBriefsResponse(response))
             } else {
-                popularMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_no_connection)))
+                popularMovieBriefs.postValue(Resource.Error(R.string.msg_no_connection))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> popularMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_network_failure)))
-                else -> popularMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_conversion_error)))
+                is IOException -> popularMovieBriefs.postValue(Resource.Error(R.string.msg_network_failure))
+                else -> popularMovieBriefs.postValue(Resource.Error(R.string.msg_conversion_error))
             }
         }
     }
@@ -153,17 +159,17 @@ class MoviesViewModel(
     private suspend fun safeSimilarMovieBriefsCall(movieId: Int) {
         similarMovieBriefs.postValue(Resource.Loading())
         try {
-            if (hasInternetConnection()) {
+            if (connection.hasInternetConnection()) {
                 val response =
-                    moviesRepository.getSimilarMovies(movieId)
+                    repository.getSimilarMovies(movieId)
                 similarMovieBriefs.postValue(handleSimilarMovieBriefsResponse(response))
             } else {
-                similarMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_no_connection)))
+                similarMovieBriefs.postValue(Resource.Error(R.string.msg_no_connection))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> similarMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_network_failure)))
-                else -> similarMovieBriefs.postValue(Resource.Error(app.getString(R.string.msg_conversion_error)))
+                is IOException -> similarMovieBriefs.postValue(Resource.Error(R.string.msg_network_failure))
+                else -> similarMovieBriefs.postValue(Resource.Error(R.string.msg_conversion_error))
             }
         }
     }
@@ -171,53 +177,31 @@ class MoviesViewModel(
     private suspend fun safeGetMovieCall(movieId: Int) {
         movie.postValue(Resource.Loading())
         try {
-            if (hasInternetConnection()) {
+            if (connection.hasInternetConnection()) {
                 val response =
-                    moviesRepository.getMovie(movieId)
+                    repository.getMovie(movieId)
                 movie.postValue(handleGetMovieResponse(response))
             } else {
-                movie.postValue(Resource.Error(app.getString(R.string.msg_no_connection)))
+                movie.postValue(Resource.Error(R.string.msg_no_connection))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> movie.postValue(Resource.Error(app.getString(R.string.msg_network_failure)))
-                else -> movie.postValue(Resource.Error(app.getString(R.string.msg_conversion_error)))
+                is IOException -> movie.postValue(Resource.Error(R.string.msg_network_failure))
+                else -> movie.postValue(Resource.Error(R.string.msg_conversion_error))
             }
-        }
-    }
-
-    private fun hasInternetConnection(): Boolean {
-        val connectivityManager = app.getSystemService(
-            Context.CONNECTIVITY_SERVICE
-        ) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val activeNetwork = connectivityManager.activeNetwork ?: return false
-            val capabilities =
-                connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
-            return when {
-                capabilities.hasTransport(TRANSPORT_WIFI) -> true
-                capabilities.hasTransport(TRANSPORT_CELLULAR) -> true
-                capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
-                else -> false
-            }
-        } else {
-            @Suppress("DEPRECATION")
-            val netInfo = connectivityManager.activeNetworkInfo
-            @Suppress("DEPRECATION")
-            return netInfo != null && netInfo.isConnectedOrConnecting
         }
     }
 
     fun saveMovieBrief(movieBrief: MovieBrief) = viewModelScope.launch {
-        moviesRepository.upsert(movieBrief)
+        repository.upsert(movieBrief)
     }
 
     fun getMovieBrief(movieId: Int) =
-        moviesRepository.getMovieBrief(movieId)
+        repository.getMovieBrief(movieId)
 
-    fun getSavedMovieBriefs() = moviesRepository.getAllMovieBriefs()
+    fun getSavedMovieBriefs() = repository.getAllMovieBriefs()
 
     fun deleteMovieBrief(movieBrief: MovieBrief) = viewModelScope.launch {
-        moviesRepository.deleteMovieBrief(movieBrief)
+        repository.deleteMovieBrief(movieBrief)
     }
 }

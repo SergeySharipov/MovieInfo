@@ -7,13 +7,22 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import ca.sharipov.movieinfo.R
 import ca.sharipov.movieinfo.databinding.ActivityMoviesBinding
-import ca.sharipov.movieinfo.db.MovieBriefDatabase
 import ca.sharipov.movieinfo.repository.MoviesRepository
+import ca.sharipov.movieinfo.util.InternetConnectionUtil
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MoviesActivity : AppCompatActivity() {
 
     lateinit var viewModel: MoviesViewModel
     private lateinit var binding: ActivityMoviesBinding
+
+    @Inject
+    lateinit var moviesRepository: MoviesRepository
+
+    @Inject
+    lateinit var connection: InternetConnectionUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +30,7 @@ class MoviesActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val moviesRepository = MoviesRepository(MovieBriefDatabase(this))
-        val viewModelProviderFactory = MoviesViewModelProviderFactory(application, moviesRepository)
+        val viewModelProviderFactory = MoviesViewModelProviderFactory(moviesRepository, connection)
         viewModel =
             ViewModelProvider(this, viewModelProviderFactory).get(MoviesViewModel::class.java)
         val navHostFragment =

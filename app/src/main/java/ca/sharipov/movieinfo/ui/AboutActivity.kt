@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import ca.sharipov.movieinfo.BuildConfig
 import ca.sharipov.movieinfo.R
 import ca.sharipov.movieinfo.databinding.ActivityAboutBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AboutActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAboutBinding
