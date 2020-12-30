@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +10,7 @@
         android:id="@+id/toolbarAbout"
         layout="@layout/toolbar" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/app_bar_height"
@@ -17,55 +18,92 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tvAppName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:text="@string/app_name"
+            android:layout_margin="5dp"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tvVersionLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.40" />
 
         <TextView
+            android:id="@+id/tvAboutLine1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginTop="50dp"
             android:text="@string/tv_about_line_1"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAppName" />
 
         <TextView
+            android:id="@+id/tvAboutLine2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/tv_about_line_2"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAboutLine1" />
 
         <TextView
+            android:id="@+id/tvAboutLine3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/tv_about_line_3"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/tvVersionLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAboutLine2"
+            app:layout_constraintVertical_chainStyle="spread_inside" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvVersionLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="end"
+            android:text="@string/tv_version"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/ivTmdb"
+            app:layout_constraintEnd_toStartOf="@id/tvVersion"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAboutLine3"
+            app:layout_constraintVertical_bias="1" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:text="@string/tv_version"
-                android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tvVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/test_version"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/ivTmdb"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/tvVersionLabel" />
 
-            <TextView
-                android:id="@+id/tvVersion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/test_version"
-                android:textSize="16sp" />
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/ivTmdb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_tmdb"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
