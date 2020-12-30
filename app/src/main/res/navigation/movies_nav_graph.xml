@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/popularMoviesFragment"
-        android:name="ca.sharipov.movieinfo.ui.fragments.PopularMoviesFragment"
+        android:name="ca.sharipov.serhii.movieinfo.ui.fragments.PopularMoviesFragment"
         android:label="PopularMoviesFragment">
         <action
             android:id="@+id/action_popularMoviesFragment_to_movieFragment"
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/savedMoviesFragment"
-        android:name="ca.sharipov.movieinfo.ui.fragments.SavedMoviesFragment"
+        android:name="ca.sharipov.serhii.movieinfo.ui.fragments.SavedMoviesFragment"
         android:label="SavedMoviesFragment">
         <action
             android:id="@+id/action_savedMoviesFragment_to_moviesFragment"
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchMoviesFragment"
-        android:name="ca.sharipov.movieinfo.ui.fragments.SearchMoviesFragment"
+        android:name="ca.sharipov.serhii.movieinfo.ui.fragments.SearchMoviesFragment"
         android:label="SearchMoviesFragment">
         <action
             android:id="@+id/action_searchMoviesFragment_to_movieFragment"
@@ -41,11 +41,11 @@
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="ca.sharipov.movieinfo.ui.fragments.MovieDetailsFragment"
+        android:name="ca.sharipov.serhii.movieinfo.ui.fragments.MovieDetailsFragment"
         android:label="MovieDetailsFragment">
         <argument
             android:name="movieBrief"
-            app:argType="ca.sharipov.movieinfo.models.MovieBrief" />
+            app:argType="ca.sharipov.serhii.movieinfo.models.MovieBrief" />
         <action
             android:id="@+id/action_movieFragment_to_movieFragment"
             app:destination="@id/movieDetailsFragment"
