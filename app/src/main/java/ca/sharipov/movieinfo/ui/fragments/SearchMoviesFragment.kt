@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.AbsListView
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -147,10 +148,12 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
     }
 
     private fun performSearch(query: String?) {
-        if (query != null && query.length > 1) {
+        if (query != null && query.isNotEmpty()) {
             searchQuery = query
             searchView.clearFocus()
             viewModel.searchMovieBriefs(query)
+        } else{
+            Toast.makeText(context,R.string.msg_empty_query_field,Toast.LENGTH_SHORT).show()
         }
     }
 
