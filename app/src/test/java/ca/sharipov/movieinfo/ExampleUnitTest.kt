@@ -1,4 +1,4 @@
-package ca.sharipov.movieinfo
+package ca.sharipov.serhii.movieinfo
 
 import org.junit.Test
 

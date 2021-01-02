@@ -27,6 +27,7 @@
     <string name="msg_undo">Отменить</string>
     <string name="msg_copied">Скопировано</string>
     <string name="msg_unknown_error">Произошла неизвестная ошибка</string>
+    <string name="msg_empty_query_field">Пожалуйста, введите поисковый запрос</string>
 
     <string name="test_title">Название один, два, три, четыре, пять</string>
     <string name="test_description">Обзор один два три четыре пять Обзор один два три четыре пять</string>

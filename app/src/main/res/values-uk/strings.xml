@@ -27,6 +27,7 @@
     <string name="msg_undo">Скасувати</string>
     <string name="msg_copied">Скопійовано</string>
     <string name="msg_unknown_error">Сталася невідома помилка</string>
+    <string name="msg_empty_query_field">Будь ласка, введіть пошуковий запит</string>
 
     <string name="test_title">Назва один, два, три, чотири, п\'ять</string>
     <string name="test_description">Огляд один два три чотири п\'ять Огляд один два три чотири п\'ять</string>
