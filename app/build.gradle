@@ -18,7 +18,7 @@ android {
         applicationId "ca.sharipov.serhii.movieinfo"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 2
+        versionCode 3
         versionName "2.0"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -94,8 +94,8 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
     //Dagger - Hilt
-    implementation "com.google.dagger:hilt-android:2.28-alpha"
-    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
+    implementation "com.google.dagger:hilt-android:2.28.3-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.28.3-alpha"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02"
     kapt "androidx.hilt:hilt-compiler:1.0.0-alpha02"
 }
