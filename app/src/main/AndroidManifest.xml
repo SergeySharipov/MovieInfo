@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieInfo">
-        <activity android:name="ca.sharipov.serhii.movieinfo.ui.MoviesActivity">
+        <activity android:name="ca.sharipov.serhii.movieinfo.ui.MoviesActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
