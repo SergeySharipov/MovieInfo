@@ -8,7 +8,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ca.sharipov.serhii.movieinfo.R
 import ca.sharipov.serhii.movieinfo.adapters.GenresAdapter
 import ca.sharipov.serhii.movieinfo.adapters.SimilarMoviesAdapter
@@ -183,7 +185,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             genresAdapter = GenresAdapter(genres)
             bindingContent.rvGenres.apply {
                 adapter = genresAdapter
-                layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = GridLayoutManager(activity, 2, RecyclerView.HORIZONTAL, false)
             }
         }
     }
