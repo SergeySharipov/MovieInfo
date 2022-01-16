@@ -50,7 +50,7 @@ class MovieBriefsAdapter : RecyclerView.Adapter<MovieBriefsAdapter.MovieViewHold
             if (movie.releaseDate != null && movie.releaseDate.length > 4) {
                 holder.binding.tvReleaseDate.text = movie.releaseDate.subSequence(0, 4)
             }
-            holder.binding.tvVoteAverage.text = movie.voteAverage.toString()
+            holder.binding.tvVoteAverage.text = movie.voteAverage.toString().substring(0,3)
             holder.binding.tvOverview.text = movie.overview
 
             setOnClickListener {

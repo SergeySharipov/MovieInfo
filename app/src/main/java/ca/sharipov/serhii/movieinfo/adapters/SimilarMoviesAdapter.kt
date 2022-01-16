@@ -49,7 +49,7 @@ class SimilarMoviesAdapter : RecyclerView.Adapter<SimilarMoviesAdapter.MovieView
             if (movie.releaseDate != null && movie.releaseDate.length > 4) {
                 holder.binding.tvReleaseDate.text = movie.releaseDate.subSequence(0, 4)
             }
-            holder.binding.tvVoteAverage.text = movie.voteAverage.toString()
+            holder.binding.tvVoteAverage.text = movie.voteAverage.toString().substring(0,3)
 
             setOnClickListener {
                 onItemClickListener?.let { it(movie) }
