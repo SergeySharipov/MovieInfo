@@ -8,17 +8,15 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import ca.sharipov.serhii.movieinfo.R
-import ca.sharipov.serhii.movieinfo.adapters.GenresAdapter
 import ca.sharipov.serhii.movieinfo.adapters.SimilarMoviesAdapter
 import ca.sharipov.serhii.movieinfo.databinding.FragmentMovieDetailsBinding
 import ca.sharipov.serhii.movieinfo.models.Genre
 import ca.sharipov.serhii.movieinfo.models.MovieBrief
 import ca.sharipov.serhii.movieinfo.ui.MoviesActivity
 import ca.sharipov.serhii.movieinfo.ui.MoviesViewModel
+import ca.sharipov.serhii.movieinfo.ui.custom.GenresFlow
 import ca.sharipov.serhii.movieinfo.util.Constants
 import ca.sharipov.serhii.movieinfo.util.Resource
 import ca.sharipov.serhii.movieinfo.util.copyToClipboard
@@ -35,7 +33,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     lateinit var viewModel: MoviesViewModel
     val args: MovieDetailsFragmentArgs by navArgs()
     lateinit var moviesAdapter: SimilarMoviesAdapter
-    lateinit var genresAdapter: GenresAdapter
+    private var genresFlow: GenresFlow? = null
     private var isSaved: Boolean = false
     private var movieTitleAndReleaseYear: String = ""
 
@@ -56,7 +54,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        bindingContent.rvGenres.adapter = null
+        genresFlow = null
         bindingContent.rvSimilarMovies.adapter = null
         _binding = null
     }
@@ -107,7 +105,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             bindingContent.tvReleaseDate.text = releaseYear
         }
 
-        bindingContent.tvVoteAverage.text = movieBrief.voteAverage.toString().substring(0,3)
+        bindingContent.tvVoteAverage.text = movieBrief.voteAverage.toString().substring(0, 3)
         bindingContent.tvOverview.text = movieBrief.overview
 
         viewModel.getMovieBrief(movieBrief.id!!)
@@ -182,11 +180,10 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     private fun setupGenresRecyclerView(genres: List<Genre>?) {
         if (activity != null && genres != null) {
-            genresAdapter = GenresAdapter(genres)
-            bindingContent.rvGenres.apply {
-                adapter = genresAdapter
-                layoutManager = GridLayoutManager(activity, 2, RecyclerView.HORIZONTAL, false)
-            }
+            bindingContent.gfGenres.setup(
+                bindingContent.clGenres,
+                genres
+            )
         }
     }
 

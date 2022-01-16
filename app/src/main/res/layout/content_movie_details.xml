@@ -59,15 +59,37 @@
                     app:layout_constraintStart_toEndOf="@id/cvMovieImage"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvGenres"
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_margin="7dp"
+                    android:layout_margin="6dp"
                     app:layout_constraintBottom_toTopOf="@id/tvReleaseDate"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/cvMovieImage"
-                    app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+                    app:layout_constraintTop_toBottomOf="@id/tvTitle">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clGenres"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="2dp">
+
+                        <ca.sharipov.serhii.movieinfo.ui.custom.GenresFlow
+                            android:id="@+id/gfGenres"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            app:flow_horizontalBias="0"
+                            app:flow_horizontalGap="5dp"
+                            app:flow_horizontalStyle="packed"
+                            app:flow_verticalBias="0"
+                            app:flow_verticalGap="5dp"
+                            app:flow_wrapMode="chain"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.core.widget.NestedScrollView>
 
                 <TextView
                     android:id="@+id/tvReleaseDate"
