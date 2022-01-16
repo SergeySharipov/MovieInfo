@@ -15,13 +15,11 @@ import ca.sharipov.serhii.movieinfo.adapters.SimilarMoviesAdapter
 import ca.sharipov.serhii.movieinfo.databinding.FragmentMovieDetailsBinding
 import ca.sharipov.serhii.movieinfo.models.Genre
 import ca.sharipov.serhii.movieinfo.models.MovieBrief
-import ca.sharipov.serhii.movieinfo.repository.MoviesRepository
 import ca.sharipov.serhii.movieinfo.ui.MoviesActivity
 import ca.sharipov.serhii.movieinfo.ui.MoviesViewModel
 import ca.sharipov.serhii.movieinfo.util.Constants
 import ca.sharipov.serhii.movieinfo.util.Resource
 import ca.sharipov.serhii.movieinfo.util.copyToClipboard
-import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -56,6 +54,8 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        bindingContent.rvGenres.adapter = null
+        bindingContent.rvSimilarMovies.adapter = null
         _binding = null
     }
 
@@ -134,7 +134,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private fun copyMovieDetailsToClipboard() {
         activity.let {
             it?.copyToClipboard(movieTitleAndReleaseYear)
-            Toast.makeText(it, R.string.msg_copied, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.msg_copied, Toast.LENGTH_SHORT).show()
         }
     }
 

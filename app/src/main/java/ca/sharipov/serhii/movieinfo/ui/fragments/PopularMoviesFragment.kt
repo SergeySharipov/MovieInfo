@@ -43,6 +43,7 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        bindingContent.rvPopularMovies.adapter = null
         _binding = null
     }
 

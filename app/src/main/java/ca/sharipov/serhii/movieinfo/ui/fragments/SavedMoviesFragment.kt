@@ -41,6 +41,7 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        bindingContent.rvSavedMovies.adapter = null
         _binding = null
     }
 

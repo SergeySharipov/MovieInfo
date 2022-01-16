@@ -25,7 +25,7 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
 
     lateinit var viewModel: MoviesViewModel
     lateinit var movieBriefsAdapter: MovieBriefsAdapter
-    lateinit var searchView: SearchView
+    private var searchView: SearchView? = null
     private var searchQuery: String? = null
     private val SEARCH_QUERY = "SEARCH_QUERY"
 
@@ -48,12 +48,14 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        bindingContent.rvSearchMovies.adapter = null
+        searchView = null
         _binding = null
     }
 
     override fun onStop() {
         super.onStop()
-        searchView.clearFocus()
+        searchView?.clearFocus()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -61,10 +63,10 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
         activity?.menuInflater?.inflate(R.menu.search_fragment_menu, menu)
         val search: MenuItem = menu.findItem(R.id.menuBtnSearch)
         searchView = search.actionView as SearchView
-        searchView.queryHint = "Search..."
-        searchView.isIconified = false
+        searchView?.queryHint = "Search..."
+        searchView?.isIconified = false
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 performSearch(query)
                 return true
@@ -150,10 +152,11 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
     private fun performSearch(query: String?) {
         if (query != null && query.isNotEmpty()) {
             searchQuery = query
-            searchView.clearFocus()
+            searchView?.clearFocus()
             viewModel.searchMovieBriefs(query)
         } else{
-            Toast.makeText(context,R.string.msg_empty_query_field,Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.msg_empty_query_field, Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
