@@ -1,8 +1,6 @@
 package ca.sharipov.serhii.movieinfo.ui
 
-import android.net.NetworkCapabilities.*
 import android.util.Log
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,12 +11,14 @@ import ca.sharipov.serhii.movieinfo.models.MovieBriefsResponse
 import ca.sharipov.serhii.movieinfo.repository.MoviesRepository
 import ca.sharipov.serhii.movieinfo.util.InternetConnectionUtil
 import ca.sharipov.serhii.movieinfo.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
-class MoviesViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MoviesViewModel @Inject constructor(
     private val repository: MoviesRepository,
     private val connection: InternetConnectionUtil
 ) : ViewModel() {

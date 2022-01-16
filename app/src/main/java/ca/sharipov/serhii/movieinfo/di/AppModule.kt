@@ -3,7 +3,6 @@ package ca.sharipov.serhii.movieinfo.di
 import android.content.Context
 import android.os.Environment
 import androidx.room.Room
-import ca.sharipov.serhii.movieinfo.R
 import ca.sharipov.serhii.movieinfo.api.RequestInterceptor
 import ca.sharipov.serhii.movieinfo.api.TmdbAPI
 import ca.sharipov.serhii.movieinfo.db.MovieBriefDao
@@ -14,12 +13,11 @@ import ca.sharipov.serhii.movieinfo.util.Constants
 import ca.sharipov.serhii.movieinfo.util.Constants.Companion.DATABASE_NAME
 import ca.sharipov.serhii.movieinfo.util.InternetConnectionUtil
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -28,7 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object AppModule {
 
     @Singleton

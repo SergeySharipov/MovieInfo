@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="ca.sharipov.serhii.movieinfo.MovieInfoApplication"
+        android:name=".MovieInfoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieInfo">
         <activity android:name="ca.sharipov.serhii.movieinfo.ui.MoviesActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
