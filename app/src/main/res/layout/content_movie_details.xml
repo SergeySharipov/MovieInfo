@@ -139,6 +139,9 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:orientation="horizontal"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/item_similar_movie"
             android:id="@+id/rvSimilarMovies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
