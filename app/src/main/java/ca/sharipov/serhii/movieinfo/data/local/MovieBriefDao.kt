@@ -1,8 +1,8 @@
-package ca.sharipov.serhii.movieinfo.db
+package ca.sharipov.serhii.movieinfo.data.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import ca.sharipov.serhii.movieinfo.models.MovieBrief
+import ca.sharipov.serhii.movieinfo.data.models.MovieBrief
 
 @Dao
 interface MovieBriefDao {

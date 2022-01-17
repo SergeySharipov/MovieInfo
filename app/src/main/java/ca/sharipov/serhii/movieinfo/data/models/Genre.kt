@@ -1,4 +1,4 @@
-package ca.sharipov.serhii.movieinfo.models
+package ca.sharipov.serhii.movieinfo.data.models
 
 
 import androidx.room.Entity

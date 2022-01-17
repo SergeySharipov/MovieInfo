@@ -1,4 +1,4 @@
-package ca.sharipov.serhii.movieinfo.api
+package ca.sharipov.serhii.movieinfo.data.remote
 
 import ca.sharipov.serhii.movieinfo.BuildConfig
 import okhttp3.Interceptor

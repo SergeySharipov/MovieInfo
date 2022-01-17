@@ -1,9 +1,9 @@
-package ca.sharipov.serhii.movieinfo.repository
+package ca.sharipov.serhii.movieinfo.data
 
 import androidx.lifecycle.LiveData
-import ca.sharipov.serhii.movieinfo.models.Movie
-import ca.sharipov.serhii.movieinfo.models.MovieBrief
-import ca.sharipov.serhii.movieinfo.models.MovieBriefsResponse
+import ca.sharipov.serhii.movieinfo.data.models.Movie
+import ca.sharipov.serhii.movieinfo.data.models.MovieBrief
+import ca.sharipov.serhii.movieinfo.data.models.MovieBriefsResponse
 import retrofit2.Response
 
 interface MoviesRepository {

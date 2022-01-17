@@ -1,4 +1,4 @@
-package ca.sharipov.serhii.movieinfo.db
+package ca.sharipov.serhii.movieinfo.data.local
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

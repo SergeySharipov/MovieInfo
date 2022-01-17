@@ -45,7 +45,7 @@
         android:label="MovieDetailsFragment">
         <argument
             android:name="movieBrief"
-            app:argType="ca.sharipov.serhii.movieinfo.models.MovieBrief" />
+            app:argType="ca.sharipov.serhii.movieinfo.data.models.MovieBrief" />
         <action
             android:id="@+id/action_movieFragment_to_movieFragment"
             app:destination="@id/movieDetailsFragment"

@@ -1,7 +1,7 @@
-package ca.sharipov.serhii.movieinfo.api
+package ca.sharipov.serhii.movieinfo.data.remote
 
-import ca.sharipov.serhii.movieinfo.models.Movie
-import ca.sharipov.serhii.movieinfo.models.MovieBriefsResponse
+import ca.sharipov.serhii.movieinfo.data.models.Movie
+import ca.sharipov.serhii.movieinfo.data.models.MovieBriefsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

@@ -1,4 +1,4 @@
-package ca.sharipov.serhii.movieinfo.util
+package ca.sharipov.serhii.movieinfo.utils
 
 import android.content.ClipData
 import android.content.ClipboardManager

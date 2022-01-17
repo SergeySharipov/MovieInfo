@@ -1,18 +1,19 @@
-package ca.sharipov.serhii.movieinfo.adapters
+package ca.sharipov.serhii.movieinfo.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ca.sharipov.serhii.movieinfo.databinding.ItemSimilarMovieBinding
-import ca.sharipov.serhii.movieinfo.models.MovieBrief
-import ca.sharipov.serhii.movieinfo.util.Constants
+import ca.sharipov.serhii.movieinfo.data.models.MovieBrief
+import ca.sharipov.serhii.movieinfo.databinding.ItemMoviePreviewBinding
+import ca.sharipov.serhii.movieinfo.utils.Constants
 import com.bumptech.glide.Glide
 
-class SimilarMoviesAdapter : RecyclerView.Adapter<SimilarMoviesAdapter.MovieViewHolder>() {
 
-    inner class MovieViewHolder(val binding: ItemSimilarMovieBinding) :
+class MovieBriefsAdapter : RecyclerView.Adapter<MovieBriefsAdapter.MovieViewHolder>() {
+
+    inner class MovieViewHolder(val binding: ItemMoviePreviewBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     private val differCallback = object : DiffUtil.ItemCallback<MovieBrief>() {
@@ -29,7 +30,7 @@ class SimilarMoviesAdapter : RecyclerView.Adapter<SimilarMoviesAdapter.MovieView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemSimilarMovieBinding.inflate(layoutInflater, parent, false)
+        val binding = ItemMoviePreviewBinding.inflate(layoutInflater, parent, false)
 
         return MovieViewHolder(binding)
     }
@@ -50,6 +51,7 @@ class SimilarMoviesAdapter : RecyclerView.Adapter<SimilarMoviesAdapter.MovieView
                 holder.binding.tvReleaseDate.text = movie.releaseDate.subSequence(0, 4)
             }
             holder.binding.tvVoteAverage.text = movie.voteAverage.toString().substring(0,3)
+            holder.binding.tvOverview.text = movie.overview
 
             setOnClickListener {
                 onItemClickListener?.let { it(movie) }
@@ -61,16 +63,3 @@ class SimilarMoviesAdapter : RecyclerView.Adapter<SimilarMoviesAdapter.MovieView
         onItemClickListener = listener
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

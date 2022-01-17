@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import ca.sharipov.serhii.movieinfo.R
+import ca.sharipov.serhii.movieinfo.data.MoviesRepository
 import ca.sharipov.serhii.movieinfo.databinding.ActivityMoviesBinding
-import ca.sharipov.serhii.movieinfo.repository.MoviesRepository
-import ca.sharipov.serhii.movieinfo.util.InternetConnectionUtil
+import ca.sharipov.serhii.movieinfo.utils.InternetConnectionUtil
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

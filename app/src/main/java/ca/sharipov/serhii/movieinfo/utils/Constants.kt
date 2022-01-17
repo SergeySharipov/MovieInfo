@@ -1,4 +1,4 @@
-package ca.sharipov.serhii.movieinfo.util
+package ca.sharipov.serhii.movieinfo.utils
 
 class Constants {
     companion object {

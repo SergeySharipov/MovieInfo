@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.helper.widget.Flow
-import ca.sharipov.serhii.movieinfo.models.Genre
+import ca.sharipov.serhii.movieinfo.data.models.Genre
 
 
 class GenresFlow(context: Context, attrs: AttributeSet?) : Flow(context, attrs) {

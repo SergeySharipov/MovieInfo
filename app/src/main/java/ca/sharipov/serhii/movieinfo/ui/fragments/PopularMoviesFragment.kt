@@ -9,13 +9,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ca.sharipov.serhii.movieinfo.R
-import ca.sharipov.serhii.movieinfo.adapters.MovieBriefsAdapter
 import ca.sharipov.serhii.movieinfo.databinding.FragmentPopularMoviesBinding
 import ca.sharipov.serhii.movieinfo.ui.AboutActivity
 import ca.sharipov.serhii.movieinfo.ui.MoviesActivity
 import ca.sharipov.serhii.movieinfo.ui.MoviesViewModel
-import ca.sharipov.serhii.movieinfo.util.Constants.Companion.QUERY_PAGE_SIZE
-import ca.sharipov.serhii.movieinfo.util.Resource
+import ca.sharipov.serhii.movieinfo.ui.adapters.MovieBriefsAdapter
+import ca.sharipov.serhii.movieinfo.utils.Constants.Companion.QUERY_PAGE_SIZE
+import ca.sharipov.serhii.movieinfo.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

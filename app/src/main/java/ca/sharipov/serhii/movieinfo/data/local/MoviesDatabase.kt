@@ -1,12 +1,9 @@
-package ca.sharipov.serhii.movieinfo.db
+package ca.sharipov.serhii.movieinfo.data.local
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import ca.sharipov.serhii.movieinfo.models.MovieBrief
-import ca.sharipov.serhii.movieinfo.util.Constants.Companion.DATABASE_NAME
+import ca.sharipov.serhii.movieinfo.data.models.MovieBrief
 
 @Database(
     entities = [MovieBrief::class],

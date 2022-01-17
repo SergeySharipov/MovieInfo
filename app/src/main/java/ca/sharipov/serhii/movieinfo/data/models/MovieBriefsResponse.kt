@@ -1,6 +1,5 @@
-package ca.sharipov.serhii.movieinfo.models
+package ca.sharipov.serhii.movieinfo.data.models
 
-import ca.sharipov.serhii.movieinfo.models.MovieBrief
 import com.google.gson.annotations.SerializedName
 
 

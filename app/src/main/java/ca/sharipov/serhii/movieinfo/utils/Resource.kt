@@ -1,4 +1,4 @@
-package ca.sharipov.serhii.movieinfo.util
+package ca.sharipov.serhii.movieinfo.utils
 
 sealed class Resource<T>(
     val data: T? = null,

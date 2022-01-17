@@ -1,9 +1,8 @@
-package ca.sharipov.serhii.movieinfo.repository
+package ca.sharipov.serhii.movieinfo.data
 
-import android.content.Context
-import ca.sharipov.serhii.movieinfo.api.TmdbAPI
-import ca.sharipov.serhii.movieinfo.db.MovieBriefDao
-import ca.sharipov.serhii.movieinfo.models.MovieBrief
+import ca.sharipov.serhii.movieinfo.data.local.MovieBriefDao
+import ca.sharipov.serhii.movieinfo.data.models.MovieBrief
+import ca.sharipov.serhii.movieinfo.data.remote.TmdbAPI
 import javax.inject.Inject
 
 class DefaultMoviesRepository @Inject constructor(

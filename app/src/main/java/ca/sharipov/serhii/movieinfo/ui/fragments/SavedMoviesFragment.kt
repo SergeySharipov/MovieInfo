@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ca.sharipov.serhii.movieinfo.R
-import ca.sharipov.serhii.movieinfo.adapters.MovieBriefsAdapter
 import ca.sharipov.serhii.movieinfo.databinding.FragmentSavedMoviesBinding
 import ca.sharipov.serhii.movieinfo.ui.AboutActivity
 import ca.sharipov.serhii.movieinfo.ui.MoviesActivity
 import ca.sharipov.serhii.movieinfo.ui.MoviesViewModel
+import ca.sharipov.serhii.movieinfo.ui.adapters.MovieBriefsAdapter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
