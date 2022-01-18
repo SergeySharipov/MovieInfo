@@ -193,13 +193,13 @@ class MoviesViewModel @Inject constructor(
     }
 
     fun saveMovieBrief(movieBrief: MovieBrief) = viewModelScope.launch {
-        repository.upsert(movieBrief)
+        repository.upsertMovieBrief(movieBrief)
     }
 
-    fun getMovieBrief(movieId: Int) =
-        repository.getMovieBrief(movieId)
+    fun observeMovieBrief(movieId: Int) =
+        repository.observeMovieBrief(movieId)
 
-    fun getSavedMovieBriefs() = repository.getAllMovieBriefs()
+    fun observeAllMovieBriefs() = repository.observeAllMovieBriefs()
 
     fun deleteMovieBrief(movieBrief: MovieBrief) = viewModelScope.launch {
         repository.deleteMovieBrief(movieBrief)

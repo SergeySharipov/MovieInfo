@@ -108,7 +108,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         bindingContent.tvVoteAverage.text = movieBrief.voteAverage.toString().substring(0, 3)
         bindingContent.tvOverview.text = movieBrief.overview
 
-        viewModel.getMovieBrief(movieBrief.id!!)
+        viewModel.observeMovieBrief(movieBrief.id!!)
             .observe(viewLifecycleOwner, { movieBriefSaved ->
                 isSaved = movieBriefSaved != null
                 isSaved(isSaved)

@@ -22,13 +22,14 @@ class DefaultMoviesRepository @Inject constructor(
     override suspend fun getSimilarMovies(movieId: Int) =
         tmdbAPI.getSimilarMovies(movieId)
 
-    override suspend fun upsert(movieBrief: MovieBrief) = movieBriefDao.upsert(movieBrief)
+    override suspend fun upsertMovieBrief(movieBrief: MovieBrief) =
+        movieBriefDao.upsertMovieBrief(movieBrief)
 
-    override fun getAllMovieBriefs() = movieBriefDao.getAllMovieBriefs()
+    override fun observeAllMovieBriefs() = movieBriefDao.observeAllMovieBriefs()
 
     override suspend fun deleteMovieBrief(movieBrief: MovieBrief) =
         movieBriefDao.deleteMovieBrief(movieBrief)
 
-    override fun getMovieBrief(id: Int) =
-        movieBriefDao.getMovieBrief(id)
+    override fun observeMovieBrief(id: Int) =
+        movieBriefDao.observeMovieBrief(id)
 }

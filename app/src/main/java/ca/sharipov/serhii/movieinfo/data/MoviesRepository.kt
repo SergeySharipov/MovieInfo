@@ -16,11 +16,11 @@ interface MoviesRepository {
 
     suspend fun getSimilarMovies(movieId: Int): Response<MovieBriefsResponse>
 
-    suspend fun upsert(movieBrief: MovieBrief): Long
+    suspend fun upsertMovieBrief(movieBrief: MovieBrief): Long
 
-    fun getAllMovieBriefs(): LiveData<List<MovieBrief>>
+    fun observeAllMovieBriefs(): LiveData<List<MovieBrief>>
 
     suspend fun deleteMovieBrief(movieBrief: MovieBrief)
 
-    fun getMovieBrief(id: Int): LiveData<MovieBrief>
+    fun observeMovieBrief(id: Int): LiveData<MovieBrief>
 }

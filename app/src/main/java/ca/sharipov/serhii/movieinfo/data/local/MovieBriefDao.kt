@@ -8,14 +8,14 @@ import ca.sharipov.serhii.movieinfo.data.models.MovieBrief
 interface MovieBriefDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(article: MovieBrief): Long
+    suspend fun upsertMovieBrief(movieBrief: MovieBrief): Long
 
     @Query("SELECT * FROM movie_briefs")
-    fun getAllMovieBriefs(): LiveData<List<MovieBrief>>
+    fun observeAllMovieBriefs(): LiveData<List<MovieBrief>>
 
     @Delete
     suspend fun deleteMovieBrief(article: MovieBrief)
 
     @Query("SELECT * from movie_briefs where id=:id")
-    fun getMovieBrief(id: Int): LiveData<MovieBrief>
+    fun observeMovieBrief(id: Int): LiveData<MovieBrief>
 }
