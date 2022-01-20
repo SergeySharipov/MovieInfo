@@ -20,6 +20,7 @@ import ca.sharipov.serhii.movieinfo.utils.Constants
 import ca.sharipov.serhii.movieinfo.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
 
@@ -51,6 +52,10 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
         bindingContent.rvSearchMovies.adapter = null
         searchView = null
         _binding = null
+    }
+
+    override fun onDestroyOptionsMenu() {
+        searchView?.setOnQueryTextListener(null)
     }
 
     override fun onStop() {
