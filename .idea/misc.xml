@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/shari/AndroidStudioProjects/MyProjects/MovieInfo/app/src/main/res/drawable/ic_image.xml" value="0.3828125" />
+        <entry key="..\:/Users/shari/AndroidStudioProjects/MyProjects/MovieInfo/app/src/main/res/drawable/ic_not_saved.xml" value="0.3828125" />
         <entry key="..\:/Users/shari/AndroidStudioProjects/MyProjects/MovieInfo/app/src/main/res/layout/activity_about.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/shari/AndroidStudioProjects/MyProjects/MovieInfo/app/src/main/res/layout/activity_movies.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/shari/AndroidStudioProjects/MyProjects/MovieInfo/app/src/main/res/layout/content_movie_details.xml" value="0.36666666666666664" />
@@ -18,6 +20,7 @@
         <entry key="..\:/Users/shari/AndroidStudioProjects/MyProjects/MovieInfo/app/src/main/res/layout/item_similar_movie.xml" value="0.20677083333333332" />
         <entry key="..\:/Users/shari/AndroidStudioProjects/MyProjects/MovieInfo/app/src/main/res/layout/toolbar.xml" value="0.20572916666666666" />
         <entry key="..\:/Users/shari/AndroidStudioProjects/MyProjects/MovieInfo/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.20572916666666666" />
+        <entry key="..\:/Users/shari/AndroidStudioProjects/MyProjects/MovieInfo/app/src/main/res/menu/search_fragment_menu.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

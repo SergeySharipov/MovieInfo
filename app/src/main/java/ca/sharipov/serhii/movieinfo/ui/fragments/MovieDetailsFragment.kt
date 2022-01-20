@@ -93,10 +93,18 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         setupSimilarMoviesRecyclerView()
 
         val movieBrief: MovieBrief = args.movieBrief
-        glide.load(Constants.BACKDROP_URL + movieBrief.backdropPath)
+
+        glide
+            .load(Constants.BACKDROP_URL + movieBrief.backdropPath)
+            .centerCrop()
+            .placeholder(R.drawable.ic_no_image)
             .into(binding.toolbarBackground)
-        glide.load(Constants.POSTER_URL + movieBrief.posterPath)
+        glide
+            .load(Constants.POSTER_URL + movieBrief.posterPath)
+            .centerCrop()
+            .placeholder(R.drawable.ic_no_image)
             .into(bindingContent.ivMovieImage)
+
         bindingContent.tvTitle.text = movieBrief.title
 
         var releaseYear = ""

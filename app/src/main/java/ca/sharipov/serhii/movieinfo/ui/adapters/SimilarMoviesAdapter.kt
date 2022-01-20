@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import ca.sharipov.serhii.movieinfo.R
 import ca.sharipov.serhii.movieinfo.data.models.MovieBrief
 import ca.sharipov.serhii.movieinfo.databinding.ItemSimilarMovieBinding
 import ca.sharipov.serhii.movieinfo.utils.Constants
@@ -43,13 +44,16 @@ class SimilarMoviesAdapter : RecyclerView.Adapter<SimilarMoviesAdapter.MovieView
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = differ.currentList[position]
         holder.itemView.apply {
-            Glide.with(this).load(Constants.POSTER_URL + movie.posterPath)
+            Glide.with(this)
+                .load(Constants.POSTER_URL + movie.posterPath)
+                .centerCrop()
+                .placeholder(R.drawable.ic_no_image)
                 .into(holder.binding.ivMovieImage)
             holder.binding.tvTitle.text = movie.title
             if (movie.releaseDate != null && movie.releaseDate.length > 4) {
                 holder.binding.tvReleaseDate.text = movie.releaseDate.subSequence(0, 4)
             }
-            holder.binding.tvVoteAverage.text = movie.voteAverage.toString().substring(0,3)
+            holder.binding.tvVoteAverage.text = movie.voteAverage.toString().substring(0, 3)
 
             setOnClickListener {
                 onItemClickListener?.let { it(movie) }

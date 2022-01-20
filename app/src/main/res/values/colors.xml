@@ -4,6 +4,7 @@
     <color name="color_primary_dark">#c62828</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="light_gray">#E7E7E7</color>
 
     <color name="collapsing_toolbar">#e53935</color>
     <color name="collapsing_toolbar_status">#c62828</color>

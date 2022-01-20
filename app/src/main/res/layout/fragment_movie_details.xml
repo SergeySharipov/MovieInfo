@@ -29,7 +29,8 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/toolbar_iv_movie_image"
                 android:fitsSystemWindows="true"
-                android:scaleType="centerCrop" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_no_image" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
