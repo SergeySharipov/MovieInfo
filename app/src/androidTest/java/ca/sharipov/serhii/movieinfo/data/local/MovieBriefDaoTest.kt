@@ -1,26 +1,36 @@
 package ca.sharipov.serhii.movieinfo.data.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.filters.MediumTest
 import ca.sharipov.serhii.movieinfo.data.models.MovieBrief
 import ca.sharipov.serhii.movieinfo.getOrAwaitValue
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import javax.inject.Inject
+import javax.inject.Named
 
 @ExperimentalCoroutinesApi
 @MediumTest
+@HiltAndroidTest
 class MovieBriefDaoTest {
+
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
+
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var database: MoviesDatabase
+    @Inject
+    @Named("test_db")
+    lateinit var database: MoviesDatabase
+
     private lateinit var dao: MovieBriefDao
     private val testMovieBrief: MovieBrief = MovieBrief(
         155,
@@ -43,10 +53,7 @@ class MovieBriefDaoTest {
 
     @Before
     fun setUp() {
-        database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            MoviesDatabase::class.java
-        ).build()
+        hiltRule.inject()
         dao = database.movieBriefDao()
     }
 
