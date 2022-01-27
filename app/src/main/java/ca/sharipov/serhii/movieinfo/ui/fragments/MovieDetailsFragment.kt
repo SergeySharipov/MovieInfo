@@ -116,10 +116,10 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         bindingContent.tvOverview.text = movieBrief.overview
 
         viewModel.observeMovieBrief(movieBrief.id!!)
-            .observe(viewLifecycleOwner, { movieBriefSaved ->
+            .observe(viewLifecycleOwner) { movieBriefSaved ->
                 isSaved = movieBriefSaved != null
                 isSaved(isSaved)
-            })
+            }
 
         getSimilarMovies(movieBrief.id!!)
         getMovieDetails(movieBrief.id!!)
@@ -147,7 +147,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     private fun getSimilarMovies(movieId: Int) {
         viewModel.getSimilarMovieBriefs(movieId)
-        viewModel.similarMovieBriefs.observe(viewLifecycleOwner, { response ->
+        viewModel.similarMovieBriefs.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     response.data?.let { moviesResponse ->
@@ -162,12 +162,12 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                 is Resource.Loading -> {
                 }
             }
-        })
+        }
     }
 
     private fun getMovieDetails(movieId: Int) {
         viewModel.getMovie(movieId)
-        viewModel.movie.observe(viewLifecycleOwner, { response ->
+        viewModel.movie.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     response.data?.let { movieResponse ->
@@ -182,7 +182,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                 is Resource.Loading -> {
                 }
             }
-        })
+        }
     }
 
     private fun setupGenresChipGroup(genres: List<Genre>?) {

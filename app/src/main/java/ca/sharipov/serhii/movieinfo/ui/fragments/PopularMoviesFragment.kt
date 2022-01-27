@@ -86,7 +86,7 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
             )
         }
 
-        viewModel.popularMovieBriefs.observe(viewLifecycleOwner, { response ->
+        viewModel.popularMovieBriefs.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
@@ -107,7 +107,7 @@ class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
                     showProgressBar()
                 }
             }
-        })
+        }
 
         bindingErrorMsg.btnRetry.setOnClickListener {
             viewModel.getPopularMovieBriefs()

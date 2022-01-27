@@ -113,14 +113,14 @@ class SavedMoviesFragment : Fragment(R.layout.fragment_saved_movies) {
             attachToRecyclerView(bindingContent.rvSavedMovies)
         }
 
-        viewModel.observeAllMovieBriefs().observe(viewLifecycleOwner, { movieBrief ->
+        viewModel.observeAllMovieBriefs().observe(viewLifecycleOwner) { movieBrief ->
             if (movieBrief.isEmpty()) {
                 showNothingSavedMessage()
             } else {
                 hideNothingSavedMessage()
             }
             movieBriefsAdapter.differ.submitList(movieBrief)
-        })
+        }
     }
 
     private fun hideNothingSavedMessage() {

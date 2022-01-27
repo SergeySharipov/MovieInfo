@@ -124,7 +124,7 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
             )
         }
 
-        viewModel.searchMovieBriefs.observe(viewLifecycleOwner, { response ->
+        viewModel.searchMovieBriefs.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
@@ -146,7 +146,7 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
                     showProgressBar()
                 }
             }
-        })
+        }
 
         bindingErrorMsg.btnRetry.setOnClickListener {
             performSearch(searchQuery)
