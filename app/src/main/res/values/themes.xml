@@ -13,5 +13,14 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="android:windowTranslucentStatus" tools:targetApi="l">true</item>
         <!-- Customize your theme here. -->
+        <item name="chipStyle">@style/MaterialComponents_Chip_Thin</item>
     </style>
+
+    <style name="MaterialComponents_Chip_Thin" parent="@style/Widget.MaterialComponents.Chip.Action">
+        <item name="chipMinHeight">@dimen/chipMinHeight</item>
+        <item name="chipMinTouchTargetSize">@dimen/chipMinTouchTargetSize</item>
+        <item name="android:textSize">@dimen/chipTextSize</item>
+        <item name="android:textColor">@color/chip_text_color</item>
+    </style>
+
 </resources>

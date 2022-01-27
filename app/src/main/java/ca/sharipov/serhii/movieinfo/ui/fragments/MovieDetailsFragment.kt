@@ -16,13 +16,14 @@ import ca.sharipov.serhii.movieinfo.databinding.FragmentMovieDetailsBinding
 import ca.sharipov.serhii.movieinfo.ui.MoviesActivity
 import ca.sharipov.serhii.movieinfo.ui.MoviesViewModel
 import ca.sharipov.serhii.movieinfo.ui.adapters.SimilarMoviesAdapter
-import ca.sharipov.serhii.movieinfo.ui.custom.GenresFlow
 import ca.sharipov.serhii.movieinfo.utils.Constants
 import ca.sharipov.serhii.movieinfo.utils.Resource
 import ca.sharipov.serhii.movieinfo.utils.copyToClipboard
 import com.bumptech.glide.RequestManager
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
@@ -33,7 +34,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     lateinit var viewModel: MoviesViewModel
     val args: MovieDetailsFragmentArgs by navArgs()
     lateinit var moviesAdapter: SimilarMoviesAdapter
-    private var genresFlow: GenresFlow? = null
     private var isSaved: Boolean = false
     private var movieTitleAndReleaseYear: String = ""
 
@@ -54,7 +54,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        genresFlow = null
         bindingContent.rvSimilarMovies.adapter = null
         _binding = null
     }
@@ -172,7 +171,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             when (response) {
                 is Resource.Success -> {
                     response.data?.let { movieResponse ->
-                        setupGenresRecyclerView(movieResponse.genres)
+                        setupGenresChipGroup(movieResponse.genres)
                     }
                 }
                 is Resource.Error -> {
@@ -186,12 +185,14 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         })
     }
 
-    private fun setupGenresRecyclerView(genres: List<Genre>?) {
+    private fun setupGenresChipGroup(genres: List<Genre>?) {
         if (activity != null && genres != null) {
-            bindingContent.gfGenres.setup(
-                bindingContent.clGenres,
-                genres
-            )
+            bindingContent.cgGenres.removeAllViewsInLayout()
+            for (genre in genres) {
+                val chip = Chip(context)
+                chip.text = genre.name
+                bindingContent.cgGenres.addView(chip)
+            }
         }
     }
 

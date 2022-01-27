@@ -6,6 +6,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="light_gray">#E7E7E7</color>
 
+    <color name="chip_text_color">#434343</color>
+
     <color name="collapsing_toolbar">#e53935</color>
     <color name="collapsing_toolbar_status">#c62828</color>
 </resources>

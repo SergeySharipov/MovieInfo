@@ -3,4 +3,7 @@
     <dimen name="app_bar_height">56dp</dimen>
     <dimen name="bottom_nav_height">56dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="chipMinHeight">24dp</dimen>
+    <dimen name="chipMinTouchTargetSize">32dp</dimen>
+    <dimen name="chipTextSize">12sp</dimen>
 </resources>
